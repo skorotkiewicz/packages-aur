@@ -27,5 +27,4 @@ sha256sums_aarch64=('SKIP' 'SKIP')
 package() {
   install -Dm755 lore "$pkgdir/usr/bin/lore"
   install -Dm755 loreserver "$pkgdir/usr/bin/loreserver"
-  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 }
