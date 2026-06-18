@@ -1,1 +1,4 @@
-aur-*.yml
+*
+!.gitignore
+!PKGBUILD
+!.SRCINFO
