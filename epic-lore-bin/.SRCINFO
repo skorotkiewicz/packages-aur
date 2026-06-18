@@ -1,6 +1,6 @@
 pkgbase = epic-lore-bin
 	pkgdesc = Epic Games Lore version control system (prebuilt binaries)
-	pkgver = 0.8.3
+	pkgver = 0.8.2
 	pkgrel = 1
 	url = https://github.com/EpicGames/lore
 	install = loreserver.install
