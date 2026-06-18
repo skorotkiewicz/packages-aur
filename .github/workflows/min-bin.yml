@@ -62,7 +62,7 @@ jobs:
 
       - name: Build package
         if: steps.versions.outputs.changed == 'true'
-        run: sudo -u builder -E HOME=/home/builder bash -lc 'cd minbrowser && makepkg -f'
+        run: sudo -u builder -E HOME=/home/builder bash -lc 'cd minbrowser && makepkg -sf'
 
       - name: Push updated packaging to GitHub
         if: steps.versions.outputs.changed == 'true'
