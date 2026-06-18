@@ -20,7 +20,7 @@ jobs:
       - name: Install dependencies and create builder user
         run: |
           pacman -Syu --noconfirm
-          pacman -S --noconfirm git openssh jq curl pacman-contrib sudo
+          pacman -S --noconfirm git openssh jq curl pacman-contrib sudo gtk3 nss libxss
           useradd -m builder
           echo "builder ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
@@ -62,7 +62,7 @@ jobs:
 
       - name: Build package
         if: steps.versions.outputs.changed == 'true'
-        run: sudo -u builder -E HOME=/home/builder bash -lc 'cd minbrowser && makepkg -sf'
+        run: sudo -u builder -E HOME=/home/builder bash -lc 'cd minbrowser && makepkg -f'
 
       - name: Push updated packaging to GitHub
         if: steps.versions.outputs.changed == 'true'
