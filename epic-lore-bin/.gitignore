@@ -2,3 +2,6 @@
 !.gitignore
 !PKGBUILD
 !.SRCINFO
+!loreserver.service
+!loreserver-sysusers.conf
+!loreserver.install

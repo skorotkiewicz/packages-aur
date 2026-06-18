@@ -70,7 +70,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           sudo -u builder -E HOME=/home/builder git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-          sudo -u builder -E HOME=/home/builder git add epic-lore-bin/PKGBUILD epic-lore-bin/.SRCINFO
+          sudo -u builder -E HOME=/home/builder git add epic-lore-bin/PKGBUILD epic-lore-bin/.SRCINFO epic-lore-bin/loreserver.service epic-lore-bin/loreserver-sysusers.conf epic-lore-bin/loreserver.install
           sudo -u builder -E HOME=/home/builder git commit -m "update: ${{ steps.versions.outputs.latest }}" || true
           sudo -u builder -E HOME=/home/builder git push origin main
 
@@ -99,6 +99,9 @@ jobs:
           pkgbuild: ./epic-lore-bin/PKGBUILD
           assets: |
             epic-lore-bin/.SRCINFO
+            epic-lore-bin/loreserver.service
+            epic-lore-bin/loreserver-sysusers.conf
+            epic-lore-bin/loreserver.install
           commit_username: ${{ secrets.AUR_USERNAME }}
           commit_email: ${{ secrets.AUR_EMAIL }}
           ssh_private_key: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
