@@ -72,7 +72,7 @@ jobs:
           sudo -u builder -E HOME=/home/builder git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           sudo -u builder -E HOME=/home/builder git add epic-lore-bin/PKGBUILD epic-lore-bin/.SRCINFO
           sudo -u builder -E HOME=/home/builder git commit -m "update: ${{ steps.versions.outputs.latest }}" || true
-          sudo -u builder -E HOME=/home/builder git push origin HEAD
+          sudo -u builder -E HOME=/home/builder git push origin main
 
       - name: Summary
         run: |
@@ -89,6 +89,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
 
       - name: Publish AUR package
         uses: KSXGitHub/github-actions-deploy-aur@v4.1.2
