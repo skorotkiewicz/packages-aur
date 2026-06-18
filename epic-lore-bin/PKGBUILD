@@ -10,6 +10,7 @@ depends=('gcc-libs')
 options=(!strip)
 conflicts=('lore' 'lore-bin' 'lore-cli-bin')
 provides=('lore')
+install='loreserver.install'
 
 source=("loreserver.service" "loreserver-sysusers.conf" "loreserver.install")
 source_x86_64=(
@@ -36,5 +37,4 @@ package() {
   # Systemd service
   install -Dm644 loreserver.service "$pkgdir/usr/lib/systemd/system/loreserver.service"
   install -Dm644 loreserver-sysusers.conf "$pkgdir/usr/lib/sysusers.d/loreserver.conf"
-  install -Dm644 loreserver.install "$pkgdir/usr/lib/install-loreserver.install"
 }
