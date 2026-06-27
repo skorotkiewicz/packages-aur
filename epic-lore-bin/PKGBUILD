@@ -31,6 +31,8 @@ sha256sums_aarch64=('46223f8f28bc6e3472b9a7686068c76d419ba3f2a815f7bdfdcba7aa48c
                     '031234846f8f81ed0e4bd489aea006f213b61264c08a53d4878d01c159ae2dcb')
 
 package() {
+  cd "$srcdir"
+
   install -Dm755 lore "$pkgdir/usr/bin/lore"
   install -Dm755 loreserver "$pkgdir/usr/bin/loreserver"
 

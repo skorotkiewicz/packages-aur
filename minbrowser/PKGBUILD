@@ -20,6 +20,8 @@ sha256sums_armv7h=('376471df853150a72471a65274574d995850bb1e86250fc36a86fe09396a
 sha256sums_x86_64=('f0c20ff68a313f1d8c82e4f5023bb3673ad65efc84ce827350ea48144008a9f9')
 
 package() {
+    cd "$srcdir"
+
     # Unpacking deb
     msg2 "Unpacking deb package..."
     ar x "${srcdir}/min-${pkgver}-"*".deb"
