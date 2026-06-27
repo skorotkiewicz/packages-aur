@@ -1,5 +1,5 @@
 pkgname=gossamer
-pkgver=0.20.0
+pkgver=0.0.0
 pkgrel=1
 pkgdesc="Gossamer language toolchain"
 arch=('x86_64' 'aarch64')

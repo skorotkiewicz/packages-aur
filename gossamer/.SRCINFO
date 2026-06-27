@@ -1,6 +1,6 @@
 pkgbase = gossamer
 	pkgdesc = Gossamer language toolchain
-	pkgver = 0.20.0
+	pkgver = 0.0.0
 	pkgrel = 1
 	url = https://github.com/danpozmanter/gossamer
 	arch = x86_64
@@ -8,9 +8,9 @@ pkgbase = gossamer
 	license = Apache-2.0
 	depends = gcc-libs
 	options = !strip
-	source_x86_64 = gossamer-0.20.0-linux-x86_64.tar.gz::https://github.com/danpozmanter/gossamer/releases/download/v0.20.0/gos-0.20.0-linux-x86_64.tar.gz
+	source_x86_64 = gossamer-0.0.0-linux-x86_64.tar.gz::https://github.com/danpozmanter/gossamer/releases/download/v0.0.0/gos-0.0.0-linux-x86_64.tar.gz
 	sha256sums_x86_64 = SKIP
-	source_aarch64 = gossamer-0.20.0-linux-aarch64.tar.gz::https://github.com/danpozmanter/gossamer/releases/download/v0.20.0/gos-0.20.0-linux-aarch64.tar.gz
+	source_aarch64 = gossamer-0.0.0-linux-aarch64.tar.gz::https://github.com/danpozmanter/gossamer/releases/download/v0.0.0/gos-0.0.0-linux-aarch64.tar.gz
 	sha256sums_aarch64 = SKIP
 
 pkgname = gossamer
