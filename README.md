@@ -6,6 +6,7 @@ Multi-package AUR repository.
 
 ```text
 epic-lore-bin  Epic Games Lore prebuilt binaries
+gossamer       Gossamer language toolchain
 min-bin        Min Browser prebuilt package
 pi-bin         Pi prebuilt binaries
 ```
@@ -14,6 +15,7 @@ pi-bin         Pi prebuilt binaries
 
 ```bash
 yay -S epic-lore-bin
+yay -S gossamer
 yay -S min-bin
 yay -S pi-bin
 ```
@@ -22,6 +24,7 @@ yay -S pi-bin
 
 ```bash
 (cd epic-lore-bin && makepkg -si)
+(cd gossamer && makepkg -si)
 (cd minbrowser && makepkg -si)
 (cd pi-bin && makepkg -si)
 ```
