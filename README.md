@@ -9,6 +9,7 @@ epic-lore-bin  Epic Games Lore prebuilt binaries
 gossamer       Gossamer language toolchain
 min-bin        Min Browser prebuilt package
 pi-bin         Pi prebuilt binaries
+rayfish        Rayfish prebuilt binaries
 ```
 
 ## Install
@@ -18,6 +19,7 @@ yay -S epic-lore-bin
 yay -S gossamer
 yay -S min-bin
 yay -S pi-bin
+yay -S rayfish
 ```
 
 ## Build locally
@@ -27,6 +29,7 @@ yay -S pi-bin
 (cd gossamer && makepkg -si)
 (cd minbrowser && makepkg -si)
 (cd pi-bin && makepkg -si)
+(cd rayfish && makepkg -si)
 ```
 
 ## Automation
