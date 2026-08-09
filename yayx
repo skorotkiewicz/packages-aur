@@ -2,24 +2,116 @@
 set -euo pipefail
 
 repo="${YAYX_REPO:-$HOME/.cache/yayx/packages-aur}"
-url="https://github.com/skorotkiewicz/packages-aur.git"
+url="${YAYX_URL:-https://github.com/skorotkiewicz/packages-aur.git}"
 
-if [[ ! -d "$repo/.git" ]]; then
-    git clone "$url" "$repo"
-else
-    git -C "$repo" pull --ff-only -q
-fi
+sync_repo() {
+    if [[ -d "$repo/.git" ]]; then
+        git -C "$repo" pull --ff-only -q
+    elif [[ -e "$repo" ]]; then
+        echo "yayx: $repo exists but is not a git repository" >&2
+        exit 1
+    else
+        git clone -q "$url" "$repo"
+    fi
+}
 
-if [[ "${1:-}" == "-S" ]]; then
-    shift
+scan_updates() {
+    update_dirs=()
+    update_lines=()
+    custom_installed=()
 
-    for pkg in "$@"; do
-        if [[ -f "$repo/$pkg/PKGBUILD" ]]; then
-            yay -Bi "$repo/$pkg"
-        else
-            yay -S "$pkg"
-        fi
+    declare -A queued=()
+    declare -A seen=()
+
+    while IFS= read -r -d '' pkgbuild; do
+        dir="${pkgbuild%/PKGBUILD}"
+
+        info="$(cd "$dir" && makepkg --printsrcinfo)" || continue
+
+        pkgver="$(awk -F ' = ' '/^[[:space:]]*pkgver = / {print $2; exit}' <<<"$info")"
+        pkgrel="$(awk -F ' = ' '/^[[:space:]]*pkgrel = / {print $2; exit}' <<<"$info")"
+        epoch="$(awk -F ' = ' '/^[[:space:]]*epoch = / {print $2; exit}' <<<"$info")"
+
+        version="${pkgver}-${pkgrel}"
+        [[ -n "$epoch" && "$epoch" != 0 ]] && version="${epoch}:${version}"
+
+        while read -r pkg; do
+            [[ -n "$pkg" ]] || continue
+
+            installed="$(pacman -Q "$pkg" 2>/dev/null)" || continue
+            current="${installed#* }"
+
+            if [[ -z "${seen[$pkg]+x}" ]]; then
+                custom_installed+=("$pkg")
+                seen["$pkg"]=1
+            fi
+
+            if (( $(vercmp "$current" "$version") < 0 )); then
+                update_lines+=("$pkg  $current -> $version")
+
+                if [[ -z "${queued[$dir]+x}" ]]; then
+                    update_dirs+=("$dir")
+                    queued["$dir"]=1
+                fi
+            fi
+        done < <(
+            awk -F ' = ' '/^[[:space:]]*pkgname = / {print $2}' <<<"$info"
+        )
+    done < <(
+        find "$repo" -mindepth 2 -maxdepth 2 -name PKGBUILD -print0
+    )
+}
+
+upgrade() {
+    sync_repo
+    scan_updates
+
+    if ((${#update_lines[@]})); then
+        echo ":: Custom package updates:"
+        printf '   %s\n' "${update_lines[@]}"
+        echo
+    else
+        echo ":: Custom packages are up to date."
+    fi
+
+    # Prevent normal yay/AUR handling packages owned by yayx.
+    ignore_args=()
+
+    if ((${#custom_installed[@]})); then
+        ignore="$(IFS=,; echo "${custom_installed[*]}")"
+        ignore_args=(--ignore "$ignore")
+    fi
+
+    # Upgrade normal repo/AUR packages first.
+    yay "$@" "${ignore_args[@]}"
+
+    # Then build/install our custom updates.
+    for dir in "${update_dirs[@]}"; do
+        echo
+        echo ":: Upgrading custom/$(basename "$dir")"
+        yay -Bi "$dir"
     done
-else
-    exec yay "$@"
-fi
+}
+
+case "${1:-}" in
+    -Su|-Syu|-Suy)
+        upgrade "$@"
+        ;;
+
+    -S)
+        sync_repo
+        shift
+
+        for pkg in "$@"; do
+            if [[ -f "$repo/$pkg/PKGBUILD" ]]; then
+                yay -Bi "$repo/$pkg"
+            else
+                yay -S "$pkg"
+            fi
+        done
+        ;;
+
+    *)
+        exec yay "$@"
+        ;;
+esac
