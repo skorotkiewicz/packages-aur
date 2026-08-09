@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+repo="${YAYX_REPO:-$HOME/.cache/yayx/packages-aur}"
+url="https://github.com/skorotkiewicz/packages-aur.git"
+
+if [[ ! -d "$repo/.git" ]]; then
+    git clone "$url" "$repo"
+else
+    git -C "$repo" pull --ff-only -q
+fi
+
+if [[ "${1:-}" == "-S" ]]; then
+    shift
+
+    for pkg in "$@"; do
+        if [[ -f "$repo/$pkg/PKGBUILD" ]]; then
+            yay -Bi "$repo/$pkg"
+        else
+            yay -S "$pkg"
+        fi
+    done
+else
+    exec yay "$@"
+fi
