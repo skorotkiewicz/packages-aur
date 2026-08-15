@@ -1,6 +1,6 @@
 pkgbase = pi-bin
 	pkgdesc = AI coding agent for the terminal — minimal, extensible and optimized for tool-use (pi-mono)
-	pkgver = 0.84.1
+	pkgver = 0.84.2
 	pkgrel = 1
 	url = https://github.com/badlogic/pi-mono
 	arch = x86_64
@@ -11,9 +11,9 @@ pkgbase = pi-bin
 	provides = pi
 	conflicts = pi
 	options = !strip
-	source_x86_64 = pi-linux-x64-0.84.1-1.tar.gz::https://github.com/badlogic/pi-mono/releases/download/v0.84.1/pi-linux-x64.tar.gz
-	sha256sums_x86_64 = 5634d7ebd18274b63af3371e942f342d74bea012389575c1d1ff15ce6ca80c2f
-	source_aarch64 = pi-linux-arm64-0.84.1-1.tar.gz::https://github.com/badlogic/pi-mono/releases/download/v0.84.1/pi-linux-arm64.tar.gz
-	sha256sums_aarch64 = ab95c058a4651b5ff5d8c878e524edfb776263c7a444f325505f247c056eecfc
+	source_x86_64 = pi-linux-x64-0.84.2-1.tar.gz::https://github.com/badlogic/pi-mono/releases/download/v0.84.2/pi-linux-x64.tar.gz
+	sha256sums_x86_64 = 906fbe787fd225c4ac624fe7ebd5b1d55a60e0f5c7ef51795d231564f9ee1c13
+	source_aarch64 = pi-linux-arm64-0.84.2-1.tar.gz::https://github.com/badlogic/pi-mono/releases/download/v0.84.2/pi-linux-arm64.tar.gz
+	sha256sums_aarch64 = d15372da9e4b4c5fef9fd15bed76d7f5f1720dd39fe7cde0ec62e5b65ad63ef1
 
 pkgname = pi-bin
