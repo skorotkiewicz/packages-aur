@@ -1,6 +1,6 @@
 # Maintainer: Sebastian Korotkiewicz <skorotkiewicz@gmail.com>
 pkgname=rayfish
-pkgver=0.5.5
+pkgver=0.5.6
 pkgrel=1
 pkgdesc="P2P mesh VPN powered by iroh"
 arch=('x86_64' 'aarch64')
@@ -12,8 +12,8 @@ options=(!strip)
 source_x86_64=("ray-linux-x86_64-$pkgver::$url/releases/download/v$pkgver/ray-linux-x86_64")
 source_aarch64=("ray-linux-aarch64-$pkgver::$url/releases/download/v$pkgver/ray-linux-aarch64")
 
-sha256sums_x86_64=('64f6c24f97a593f859ce562e1bd98ce3d499751b312e653073fbdf1b4dbaa09f')
-sha256sums_aarch64=('e0801f99274e0174cec96603ed8677a9926c03e718cf8ea294684a6e17164efd')
+sha256sums_x86_64=('f7aa23d60ac777845958ad6e8c6602cb10e0a043a505686c6da5a44744151194')
+sha256sums_aarch64=('a9d35515d45519d4155a95bf980c0f8deb08fa969e1ed9744b66e9f624233674')
 
 package() {
   install -Dm755 "$srcdir/ray-linux-$CARCH-$pkgver" "$pkgdir/usr/bin/ray"
