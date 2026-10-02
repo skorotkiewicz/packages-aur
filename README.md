@@ -11,6 +11,7 @@ min-bin        Min Browser prebuilt package
 ollaya-bin     Ollaya prebuilt binaries
 pi-bin         Pi prebuilt binaries
 rayfish        Rayfish prebuilt binaries
+rhun-bin       Rhun code editor prebuilt binaries
 ```
 
 ## Install
@@ -22,6 +23,7 @@ yay -S min-bin
 yay -S ollaya-bin
 yay -S pi-bin
 yay -S rayfish
+yay -S rhun-bin
 ```
 
 ## Build locally
@@ -33,6 +35,7 @@ yay -S rayfish
 (cd ollaya-bin && makepkg -si)
 (cd pi-bin && makepkg -si)
 (cd rayfish && makepkg -si)
+(cd rhun-bin && makepkg -si)
 ```
 
 ## Automation
