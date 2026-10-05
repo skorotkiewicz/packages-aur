@@ -1,7 +1,7 @@
 # Maintainer: Sebastian Korotkiewicz <skorotkiewicz@gmail.com>
-pkgname=filmcraft-bin
+pkgname=filmcraft2-bin
 _pkgname=${pkgname%-bin}
-pkgver=0.2.0
+pkgver=0.0.0
 pkgrel=1
 pkgdesc='Video editing, color grading and audio (prebuilt binaries)'
 arch=('x86_64' 'aarch64')
