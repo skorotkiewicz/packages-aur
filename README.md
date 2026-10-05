@@ -12,6 +12,14 @@ ollaya-bin     Ollaya prebuilt binaries
 pi-bin         Pi prebuilt binaries
 rayfish        Rayfish prebuilt binaries
 rhun-bin       Rhun code editor prebuilt binaries
+
+designcraft-bin  Page layout and desktop publishing
+effectcraft-bin  Motion graphics and visual effects
+filmcraft-bin    Video editing, color grading and audio
+lightcraft-bin   Photo library and raw development
+photocraft-bin   Layer-based image and photo editing
+printcraft-bin   PDF viewer and editor
+vectorcraft-bin  Vector illustration and graphics editing
 ```
 
 ## Install
@@ -24,6 +32,14 @@ yay -S ollaya-bin
 yay -S pi-bin
 yay -S rayfish
 yay -S rhun-bin
+
+yay -S designcraft-bin
+yay -S effectcraft-bin
+yay -S filmcraft-bin
+yay -S lightcraft-bin
+yay -S photocraft-bin
+yay -S printcraft-bin
+yay -S vectorcraft-bin
 ```
 
 ## Build locally
@@ -36,6 +52,14 @@ yay -S rhun-bin
 (cd pi-bin && makepkg -si)
 (cd rayfish && makepkg -si)
 (cd rhun-bin && makepkg -si)
+
+(cd artcraft/designcraft-bin && makepkg -si)
+(cd artcraft/effectcraft-bin && makepkg -si)
+(cd artcraft/filmcraft-bin && makepkg -si)
+(cd artcraft/lightcraft-bin && makepkg -si)
+(cd artcraft/photocraft-bin && makepkg -si)
+(cd artcraft/printcraft-bin && makepkg -si)
+(cd artcraft/vectorcraft-bin && makepkg -si)
 ```
 
 ## Automation
