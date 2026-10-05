@@ -63,7 +63,7 @@ jobs:
 
       - name: Build package
         if: steps.versions.outputs.changed == 'true'
-        run: sudo -u builder -E HOME=/home/builder bash -lc 'cd artcraft/designcraft-bin && makepkg -f'
+        run: sudo -u builder -E HOME=/home/builder bash -lc 'cd artcraft/designcraft-bin && makepkg -fs --noconfirm'
 
       - name: Push updated packaging to GitHub
         if: steps.versions.outputs.changed == 'true'

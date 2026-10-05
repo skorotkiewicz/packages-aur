@@ -63,7 +63,7 @@ jobs:
 
       - name: Build package
         if: steps.versions.outputs.changed == 'true'
-        run: sudo -u builder -E HOME=/home/builder bash -lc 'cd artcraft/effectcraft-bin && makepkg -f'
+        run: sudo -u builder -E HOME=/home/builder bash -lc 'cd artcraft/effectcraft-bin && makepkg -fs --noconfirm'
 
       - name: Push updated packaging to GitHub
         if: steps.versions.outputs.changed == 'true'
