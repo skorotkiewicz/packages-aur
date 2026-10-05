@@ -35,7 +35,7 @@ yay -S rhun-bin
 
 yay -S designcraft-bin
 yay -S effectcraft-bin
-yay -S filmcraft-bin
+yay -S filmcraft2-bin #2!
 yay -S lightcraft-bin
 yay -S photocraft-bin
 yay -S printcraft-bin

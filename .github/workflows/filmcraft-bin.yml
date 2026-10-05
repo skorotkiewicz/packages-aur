@@ -96,7 +96,7 @@ jobs:
       - name: Publish AUR package
         uses: KSXGitHub/github-actions-deploy-aur@v4.1.2
         with:
-          pkgname: filmcraft-bin
+          pkgname: filmcraft2-bin
           pkgbuild: ./artcraft/filmcraft-bin/PKGBUILD
           assets: |
             artcraft/filmcraft-bin/.SRCINFO
