@@ -13,6 +13,9 @@ pi-bin         Pi prebuilt binaries
 rayfish        Rayfish prebuilt binaries
 rhun-bin       Rhun code editor prebuilt binaries
 
+ttf-nordwand-mono  Nordwand Mono prebuilt TrueType fonts
+otf-nordwand-mono  Nordwand Mono prebuilt OpenType fonts
+
 designcraft-bin  Page layout and desktop publishing
 effectcraft-bin  Motion graphics and visual effects
 filmcraft-bin    Video editing, color grading and audio
@@ -24,6 +27,8 @@ vectorcraft-bin  Vector illustration and graphics editing
 
 ## Install
 
+Nordwand Mono uses the AUR package base `nordwand-mono`, which publishes `ttf-nordwand-mono` and `otf-nordwand-mono`. Choose either font format below.
+
 ```bash
 yay -S epic-lore-bin
 yay -S gossamer
@@ -32,6 +37,9 @@ yay -S ollaya-bin
 yay -S pi-bin
 yay -S rayfish
 yay -S rhun-bin
+
+yay -S ttf-nordwand-mono
+yay -S otf-nordwand-mono
 
 yay -S designcraft-bin
 yay -S effectcraft-bin
@@ -52,6 +60,8 @@ yay -S vectorcraft-bin
 (cd pi-bin && makepkg -si)
 (cd rayfish && makepkg -si)
 (cd rhun-bin && makepkg -si)
+
+(cd nordwand-mono && makepkg -si)
 
 (cd artcraft/designcraft-bin && makepkg -si)
 (cd artcraft/effectcraft-bin && makepkg -si)
