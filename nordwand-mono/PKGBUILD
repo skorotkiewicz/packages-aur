@@ -1,0 +1,32 @@
+# Maintainer: Sebastian Korotkiewicz <skorotkiewicz@gmail.com>
+pkgbase=nordwand-mono
+pkgname=('ttf-nordwand-mono' 'otf-nordwand-mono')
+pkgver=0.0.0
+pkgrel=1
+pkgdesc="Compact monospace neo-grotesque font designed for developers"
+arch=('any')
+url="https://github.com/tywr/Nordwand-Mono"
+license=('OFL-1.1')
+
+source=(
+  "NordwandMono-TTF-$pkgver.zip::$url/releases/download/$pkgver/NordwandMono-TTF.zip"
+  "NordwandMono-OTF-$pkgver.zip::$url/releases/download/$pkgver/NordwandMono-OTF.zip"
+  "LICENSE-FONT-$pkgver.txt::https://raw.githubusercontent.com/tywr/Nordwand-Mono/$pkgver/LICENSE-FONT.txt"
+)
+sha256sums=(
+  'SKIP'
+  'SKIP'
+  'SKIP'
+)
+
+package_ttf-nordwand-mono() {
+  install -Dm644 "$srcdir"/*.ttf -t "$pkgdir/usr/share/fonts/TTF"
+  install -Dm644 "$srcdir/LICENSE-FONT-$pkgver.txt" \
+    "$pkgdir/usr/share/licenses/$pkgname/LICENSE-FONT.txt"
+}
+
+package_otf-nordwand-mono() {
+  install -Dm644 "$srcdir"/*.otf -t "$pkgdir/usr/share/fonts/OTF"
+  install -Dm644 "$srcdir/LICENSE-FONT-$pkgver.txt" \
+    "$pkgdir/usr/share/licenses/$pkgname/LICENSE-FONT.txt"
+}
