@@ -28,7 +28,7 @@ jobs:
       - name: Install dependencies and create builder user
         run: |
           pacman -Syu --noconfirm
-          pacman -S --noconfirm git openssh jq curl pacman-contrib sudo
+          pacman -S --noconfirm git openssh jq curl pacman-contrib sudo fontconfig
           useradd -m builder
 
       - name: Checkout repository
@@ -69,9 +69,12 @@ jobs:
         if: steps.versions.outputs.changed == 'true'
         env:
           LATEST_VERSION: ${{ steps.versions.outputs.latest }}
+          CURRENT_VERSION: ${{ steps.versions.outputs.current }}
         run: |
           sed -i "s/^pkgver=.*/pkgver=$LATEST_VERSION/" nordwand-mono/PKGBUILD
-          sed -i 's/^pkgrel=.*/pkgrel=1/' nordwand-mono/PKGBUILD
+          if [ "$CURRENT_VERSION" != "$LATEST_VERSION" ]; then
+            sed -i 's/^pkgrel=.*/pkgrel=1/' nordwand-mono/PKGBUILD
+          fi
           sudo -u builder -H bash -c 'cd nordwand-mono && updpkgsums && makepkg --printsrcinfo > .SRCINFO'
 
       - name: Build both font packages
@@ -85,7 +88,7 @@ jobs:
           LATEST_VERSION: ${{ steps.versions.outputs.latest }}
         run: |
           sudo -u builder -H git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-          sudo -u builder -H git add nordwand-mono/PKGBUILD nordwand-mono/.SRCINFO
+          sudo -u builder -H git add nordwand-mono/PKGBUILD nordwand-mono/.SRCINFO nordwand-mono/nordwand-mono.install
           if ! sudo -u builder -H git diff --cached --quiet; then
             sudo -u builder -H git commit -m "update: nordwand-mono $LATEST_VERSION"
             sudo -u builder -H git push origin HEAD:main
@@ -122,6 +125,7 @@ jobs:
           pkgbuild: ./nordwand-mono/PKGBUILD
           assets: |
             nordwand-mono/.SRCINFO
+            nordwand-mono/nordwand-mono.install
           commit_username: ${{ secrets.AUR_USERNAME }}
           commit_email: ${{ secrets.AUR_EMAIL }}
           ssh_private_key: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
