@@ -18,7 +18,7 @@ otf-nordwand-mono  Nordwand Mono prebuilt OpenType fonts
 
 designcraft-bin  Page layout and desktop publishing
 effectcraft-bin  Motion graphics and visual effects
-filmcraft-bin    Video editing, color grading and audio
+artcraft-filmcraft-bin  FilmCraft video editor
 lightcraft-bin   Photo library and raw development
 photocraft-bin   Layer-based image and photo editing
 printcraft-bin   PdfCraft PDF viewer and editor, formerly PrintCraft
@@ -26,6 +26,8 @@ vectorcraft-bin  Vector illustration and graphics editing
 ```
 
 ## Install
+
+`artcraft-filmcraft-bin` requires its first successful AUR publish before the yay command below works.
 
 Nordwand Mono uses the AUR package base `nordwand-mono`, which publishes `ttf-nordwand-mono` and `otf-nordwand-mono`. Choose either font format below.
 
@@ -43,7 +45,7 @@ yay -S otf-nordwand-mono
 
 yay -S designcraft-bin
 yay -S effectcraft-bin
-yay -S filmcraft2-bin #2!
+yay -S artcraft-filmcraft-bin
 yay -S lightcraft-bin
 yay -S photocraft-bin
 yay -S printcraft-bin

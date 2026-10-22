@@ -1,4 +1,4 @@
-name: Update and Publish filmcraft-bin to AUR
+name: Update and Publish artcraft-filmcraft-bin to AUR
 
 on:
   schedule:
@@ -98,7 +98,7 @@ jobs:
       - name: Publish AUR package
         uses: KSXGitHub/github-actions-deploy-aur@v4.1.2
         with:
-          pkgname: filmcraft2-bin
+          pkgname: artcraft-filmcraft-bin
           pkgbuild: ./artcraft/filmcraft-bin/PKGBUILD
           assets: |
             artcraft/filmcraft-bin/.SRCINFO
