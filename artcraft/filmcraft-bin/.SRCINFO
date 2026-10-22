@@ -1,7 +1,7 @@
 pkgbase = filmcraft2-bin
 	pkgdesc = Video editing, color grading and audio (prebuilt binaries)
 	pkgver = 0.10.0
-	pkgrel = 1
+	pkgrel = 2
 	url = https://github.com/storytold/filmcraft
 	arch = x86_64
 	arch = aarch64
@@ -10,6 +10,7 @@ pkgbase = filmcraft2-bin
 	license = LicenseRef-ArtCraft-brand
 	depends = glibc
 	depends = gcc-libs
+	depends = hicolor-icon-theme
 	depends = libxkbcommon
 	depends = libxkbcommon-x11
 	depends = libx11
