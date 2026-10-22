@@ -2,8 +2,8 @@
 pkgname=filmcraft2-bin
 # _pkgname=${pkgname%-bin}
 _pkgname=filmcraft
-pkgver=0.10.0
-pkgrel=2
+pkgver=0.11.0
+pkgrel=1
 pkgdesc='Video editing, color grading and audio (prebuilt binaries)'
 arch=('x86_64' 'aarch64')
 url="https://github.com/storytold/$_pkgname"
@@ -32,8 +32,8 @@ sha256sums=('5761787313b9d6c13dd5f03da2e04209ad7bd08eff8920edfd184141d791195c'
             '262481e844521b326f5ecd053e59b98c8b2da78c8ee1bdbb6e8174305e54935a'
             'a76abf002c49097d146e86740a3105a5d00450b1592e820a1109a8c5680cd697'
             'cee9892f9f0cc8fe882c9e9537ee6a89621d86ee7ceaf70b02e2b2b1c25c061a')
-sha256sums_x86_64=('95d7a1afcb9e2021d3371a011700af6ce2ffe1af0e1cfe99c6fb98b3aa320f80')
-sha256sums_aarch64=('29b2d805723947bad7e36b020f43b39bbc9ba849cd3bfaff04ec2c0ac4a79070')
+sha256sums_x86_64=('6edea92f6fa50ca30ac9cd3db7e20edbccbee0cafe964a2dc1493d8d9c46d8b4')
+sha256sums_aarch64=('84c504099e24b18484b7113f1e31ba97ed3611a5869aacbba826c6713a0d0185')
 
 package() {
   cd "$srcdir/$_pkgname-$pkgver-linux-$CARCH"
