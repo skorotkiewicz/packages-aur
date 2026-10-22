@@ -41,9 +41,9 @@ jobs:
         id: versions
         run: |
           current_ver=$(grep -oP '^pkgver=\K.*' pi-bin/PKGBUILD)
-          latest_ver=$(curl -fsSL https://api.github.com/repos/badlogic/pi-mono/releases/latest | jq -r '.tag_name' | sed 's/^v//')
+          latest_ver=$(curl -fsSL https://api.github.com/repos/earendil-works/pi/releases/latest | jq -r '.tag_name' | sed 's/^v//')
           changed=false
-          if [ "$current_ver" != "$latest_ver" ]; then
+          if [ "$current_ver" != "$latest_ver" ] || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             changed=true
           fi
           echo "current=$current_ver" >> "$GITHUB_OUTPUT"
@@ -56,8 +56,10 @@ jobs:
         if: steps.versions.outputs.changed == 'true'
         run: |
           latest_ver="${{ steps.versions.outputs.latest }}"
-          sed -i "s/^pkgver=.*/pkgver=$latest_ver/" pi-bin/PKGBUILD
-          sed -i "s/^pkgrel=.*/pkgrel=1/" pi-bin/PKGBUILD
+          if [ "${{ steps.versions.outputs.current }}" != "$latest_ver" ]; then
+            sed -i "s/^pkgver=.*/pkgver=$latest_ver/" pi-bin/PKGBUILD
+            sed -i "s/^pkgrel=.*/pkgrel=1/" pi-bin/PKGBUILD
+          fi
           sudo -u builder -E HOME=/home/builder bash -lc 'cd pi-bin && updpkgsums && makepkg --printsrcinfo > .SRCINFO'
 
       - name: Build package

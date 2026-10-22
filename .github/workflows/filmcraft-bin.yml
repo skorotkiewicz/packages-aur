@@ -85,25 +85,25 @@ jobs:
             echo "No new version available. Current: ${{ steps.versions.outputs.current }}"
           fi
 
-  aur-publish:
-    needs: check-and-build
-    if: needs.check-and-build.outputs.changed == 'true'
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: main
-
-      - name: Publish AUR package
-        uses: KSXGitHub/github-actions-deploy-aur@v4.1.2
-        with:
-          pkgname: artcraft-filmcraft-bin
-          pkgbuild: ./artcraft/filmcraft-bin/PKGBUILD
-          assets: |
-            artcraft/filmcraft-bin/.SRCINFO
-          commit_username: ${{ secrets.AUR_USERNAME }}
-          commit_email: ${{ secrets.AUR_EMAIL }}
-          ssh_private_key: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
-          commit_message: "aur: ${{ needs.check-and-build.outputs.latest }}"
-          ssh_keyscan_types: rsa,ecdsa,ed25519
+#   aur-publish:
+#     needs: check-and-build
+#     if: needs.check-and-build.outputs.changed == 'true'
+#     runs-on: ubuntu-latest
+#
+#     steps:
+#       - uses: actions/checkout@v4
+#         with:
+#           ref: main
+#
+#       - name: Publish AUR package
+#         uses: KSXGitHub/github-actions-deploy-aur@v4.1.2
+#         with:
+#           pkgname: artcraft-filmcraft-bin
+#           pkgbuild: ./artcraft/filmcraft-bin/PKGBUILD
+#           assets: |
+#             artcraft/filmcraft-bin/.SRCINFO
+#           commit_username: ${{ secrets.AUR_USERNAME }}
+#           commit_email: ${{ secrets.AUR_EMAIL }}
+#           ssh_private_key: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
+#           commit_message: "aur: ${{ needs.check-and-build.outputs.latest }}"
+#           ssh_keyscan_types: rsa,ecdsa,ed25519
