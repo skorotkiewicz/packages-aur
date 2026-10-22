@@ -42,7 +42,7 @@ jobs:
         id: versions
         run: |
           current_ver=$(grep -oP '^pkgver=\K.*' artcraft/printcraft-bin/PKGBUILD)
-          latest_ver=$(curl -fsSL --max-time 21600 https://api.github.com/repos/storytold/printcraft/releases/latest | jq -er '.tag_name' | sed 's/^v//')
+          latest_ver=$(curl -fsSL --max-time 21600 https://api.github.com/repos/storytold/pdfcraft/releases/latest | jq -er '.tag_name' | sed 's/^v//')
           changed=false
           if [ "$current_ver" != "$latest_ver" ] || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             changed=true

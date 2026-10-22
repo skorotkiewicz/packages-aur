@@ -21,7 +21,7 @@ effectcraft-bin  Motion graphics and visual effects
 filmcraft-bin    Video editing, color grading and audio
 lightcraft-bin   Photo library and raw development
 photocraft-bin   Layer-based image and photo editing
-printcraft-bin   PDF viewer and editor
+printcraft-bin   PdfCraft PDF viewer and editor, formerly PrintCraft
 vectorcraft-bin  Vector illustration and graphics editing
 ```
 
