@@ -57,8 +57,10 @@ jobs:
         if: steps.versions.outputs.changed == 'true'
         run: |
           latest_ver="${{ steps.versions.outputs.latest }}"
-          sed -i "s/^pkgver=.*/pkgver=$latest_ver/" artcraft/vectorcraft-bin/PKGBUILD
-          sed -i "s/^pkgrel=.*/pkgrel=1/" artcraft/vectorcraft-bin/PKGBUILD
+          if [ "${{ steps.versions.outputs.current }}" != "$latest_ver" ]; then
+            sed -i "s/^pkgver=.*/pkgver=$latest_ver/" artcraft/vectorcraft-bin/PKGBUILD
+            sed -i "s/^pkgrel=.*/pkgrel=1/" artcraft/vectorcraft-bin/PKGBUILD
+          fi
           sudo -u builder -E HOME=/home/builder bash -lc 'cd artcraft/vectorcraft-bin && updpkgsums && makepkg --printsrcinfo > .SRCINFO'
 
       - name: Build package
