@@ -1,4 +1,4 @@
-pkgbase = filmcraft2-bin
+pkgbase = artcraft-filmcraft-bin
 	pkgdesc = Video editing, color grading and audio (prebuilt binaries)
 	pkgver = 0.11.0
 	pkgrel = 1
@@ -27,6 +27,8 @@ pkgbase = filmcraft2-bin
 	optdepends = xdg-utils: open external links
 	provides = filmcraft=0.11.0
 	conflicts = filmcraft
+	conflicts = filmcraft-bin
+	conflicts = filmcraft2-bin
 	options = !strip
 	source = filmcraft-0.11.0-NOTICE.txt::https://raw.githubusercontent.com/storytold/filmcraft/v0.11.0/NOTICE
 	source = filmcraft-0.11.0-LICENSE-brand.txt::https://raw.githubusercontent.com/storytold/filmcraft/v0.11.0/docs/brand/LICENSE-brand.txt
@@ -45,4 +47,4 @@ pkgbase = filmcraft2-bin
 	source_aarch64 = https://github.com/storytold/filmcraft/releases/download/v0.11.0/filmcraft-0.11.0-linux-aarch64.tar.gz
 	sha256sums_aarch64 = 84c504099e24b18484b7113f1e31ba97ed3611a5869aacbba826c6713a0d0185
 
-pkgname = filmcraft2-bin
+pkgname = artcraft-filmcraft-bin
