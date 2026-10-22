@@ -18,7 +18,7 @@ otf-nordwand-mono  Nordwand Mono prebuilt OpenType fonts
 
 designcraft-bin  Page layout and desktop publishing
 effectcraft-bin  Motion graphics and visual effects
-artcraft-filmcraft-bin  FilmCraft video editor, local-only
+filmcraft-bin    FilmCraft video editor, [local-only]
 lightcraft-bin   Photo library and raw development
 photocraft-bin   Layer-based image and photo editing
 printcraft-bin   PdfCraft PDF viewer and editor, formerly PrintCraft

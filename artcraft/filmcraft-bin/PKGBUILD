@@ -1,5 +1,5 @@
 # Maintainer: Sebastian Korotkiewicz <skorotkiewicz@gmail.com>
-pkgname=artcraft-filmcraft-bin
+pkgname=filmcraft-bin
 _pkgname=filmcraft
 pkgver=0.11.0
 pkgrel=1
@@ -15,7 +15,7 @@ optdepends=('vulkan-driver: hardware-accelerated Vulkan rendering'
             'xdg-utils: open external links')
 options=(!strip)
 provides=("$_pkgname=$pkgver")
-conflicts=("$_pkgname" 'filmcraft-bin' 'filmcraft2-bin')
+conflicts=("$_pkgname" 'artcraft-filmcraft-bin' 'filmcraft2-bin')
 
 source=("$_pkgname-$pkgver-NOTICE.txt::https://raw.githubusercontent.com/storytold/$_pkgname/v$pkgver/NOTICE"
         "$_pkgname-$pkgver-LICENSE-brand.txt::https://raw.githubusercontent.com/storytold/$_pkgname/v$pkgver/docs/brand/LICENSE-brand.txt"
