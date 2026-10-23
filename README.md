@@ -18,7 +18,7 @@ otf-nordwand-mono  Nordwand Mono (OpenType)
 
 designcraft-bin  Page layout and desktop publishing
 effectcraft-bin  Motion graphics and visual effects
-filmcraft-bin    FilmCraft video editor (this repo only, not on AUR)
+filmcraft-bin    FilmCraft video editor, custom build
 lightcraft-bin   Photo library and raw development
 photocraft-bin   Layer-based photo editing
 printcraft-bin   PdfCraft PDF viewer and editor (formerly PrintCraft)
@@ -48,7 +48,7 @@ GenerateSrcinfo
 
 * **`Depth = 3`**: Ensures Paru finds packages in subdirectories like `artcraft/*`.
 * **`GenerateSrcinfo`**: Refreshes metadata automatically.
-* *Note:* If your config restricts sources (e.g., `AurOnly`), allow PKGBUILDs by setting `Mode = repo,aur,pkgbuilds`.
+* *Note:* If `[options]` restricts package sources, for example with `AurOnly`, replace that restriction with `Mode = arp`.
 
 Once added, just sync and install:
 
