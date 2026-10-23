@@ -15,100 +15,249 @@ sync_repo() {
     fi
 }
 
-scan_updates() {
-    update_dirs=()
-    update_lines=()
-    custom_installed=()
+declare -A package_dirs=() package_versions=() package_info=() queued=() selected=()
+update_dirs=()
 
-    declare -A queued=()
-    declare -A seen=()
+parse_args() {
+    options=()
+    targets=()
+    ignored_patterns=()
+    read_only=false
+    local arg value
+    local -a patterns
 
-    while IFS= read -r -d '' pkgbuild; do
+    while (($#)); do
+        arg="$1"
+        shift
+        case "$arg" in
+            --)
+                targets+=("$@")
+                break
+                ;;
+            --*=*)
+                options+=("$arg")
+                value="${arg#*=}"
+                ;;
+            # shortcut: new value-taking options need adding here, use --option=value meanwhile.
+            --ignore|--ignoregroup|--config|--makepkgconf|--mflags|--arch|--color|\
+            --dbpath|--root|--sysroot|--cachedir|--gpgdir|--hookdir|--logfile|\
+            --assume-installed|--overwrite|--print-format|--ask|-b|-r|\
+            --aururl|--aurrpcurl|--builddir|--editor|--editorflags|--makepkg|\
+            --pacman|--git|--gitflags|--gpg|--gpgflags|--sudo|--sudoflags|\
+            --requestsplitn|--completioninterval|--sortby|--searchby|\
+            --answerclean|--answerdiff|--answeredit|--answerupgrade)
+                if (($# == 0)); then
+                    echo "yayx: $arg requires a value" >&2
+                    return 1
+                fi
+                value="$1"
+                shift
+                options+=("$arg" "$value")
+                ;;
+            -h|--help|-V|--version|-s|--search|-i|--info|-l|--list|\
+            -p|--print|-w|--downloadonly|-g|--groups|-c|--clean)
+                read_only=true
+                options+=("$arg")
+                ;;
+            -*) options+=("$arg") ;;
+            *) targets+=("$arg") ;;
+        esac
+        if [[ "$arg" == --ignore || "$arg" == --ignore=* ]]; then
+            if [[ -z "$value" ]]; then
+                echo "yayx: --ignore requires a nonempty value" >&2
+                return 1
+            fi
+            IFS=, read -r -a patterns <<<"$value"
+            ignored_patterns+=("${patterns[@]}")
+        fi
+    done
+}
+
+is_ignored() {
+    local pattern
+    for pattern in "${ignored_patterns[@]}"; do
+        [[ "$1" != $pattern ]] || return 0
+    done
+    return 1
+}
+
+load_packages() {
+    local pkgbuild dir info pkgver pkgrel epoch version pkg
+    local -a names pkgbuilds
+    # shortcut: discovery covers root and one grouping level, extend depth if the layout changes.
+    mapfile -d '' -t pkgbuilds < <(
+        find "$repo" -mindepth 2 -maxdepth 3 -type f -name PKGBUILD \
+            -not -path "$repo/.git/*" -not -path "$repo/.github/*" \
+            -not -path "$repo/*/src/*" -not -path "$repo/*/pkg/*" -print0
+    )
+    if ! wait "$!"; then
+        echo "yayx: cannot scan $repo" >&2
+        return 1
+    fi
+    for pkgbuild in "${pkgbuilds[@]}"; do
         dir="${pkgbuild%/PKGBUILD}"
-
-        info="$(cd "$dir" && makepkg --printsrcinfo)" || continue
+        if ! info="$(cd "$dir" && makepkg --printsrcinfo)"; then
+            echo "yayx: cannot read metadata from $pkgbuild" >&2
+            return 1
+        fi
 
         pkgver="$(awk -F ' = ' '/^[[:space:]]*pkgver = / {print $2; exit}' <<<"$info")"
         pkgrel="$(awk -F ' = ' '/^[[:space:]]*pkgrel = / {print $2; exit}' <<<"$info")"
         epoch="$(awk -F ' = ' '/^[[:space:]]*epoch = / {print $2; exit}' <<<"$info")"
+        mapfile -t names < <(awk -F ' = ' '/^[[:space:]]*pkgname = / {print $2}' <<<"$info")
+        if [[ -z "$pkgver" || -z "$pkgrel" ]] || ((${#names[@]} == 0)); then
+            echo "yayx: invalid metadata from $pkgbuild" >&2
+            return 1
+        fi
 
         version="${pkgver}-${pkgrel}"
         [[ -n "$epoch" && "$epoch" != 0 ]] && version="${epoch}:${version}"
+        package_info["$dir"]="$info"
+        for pkg in "${names[@]}"; do
+            package_dirs["$pkg"]="$dir"
+            package_versions["$pkg"]="$version"
+        done
+    done
+}
 
-        while read -r pkg; do
-            [[ -n "$pkg" ]] || continue
+queue_package() {
+    local dir="${package_dirs[$1]}"
+    selected["$1"]=1
+    if [[ -z "${queued[$dir]+x}" ]]; then
+        update_dirs+=("$dir")
+        queued["$dir"]=1
+    fi
+}
 
-            installed="$(pacman -Q "$pkg" 2>/dev/null)" || continue
-            current="${installed#* }"
+scan_updates() {
+    update_lines=()
+    custom_installed=()
+    local pkg installed current version
+    for pkg in "${!package_dirs[@]}"; do
+        installed="$(pacman -Q "$pkg" 2>/dev/null)" || continue
+        current="${installed#* }"
+        custom_installed+=("$pkg")
+        is_ignored "$pkg" && continue
+        version="${package_versions[$pkg]}"
+        if (( $(vercmp "$current" "$version") < 0 )); then
+            update_lines+=("$pkg  $current -> $version")
+            queue_package "$pkg"
+        fi
+    done
+}
 
-            if [[ -z "${seen[$pkg]+x}" ]]; then
-                custom_installed+=("$pkg")
-                seen["$pkg"]=1
+select_targets() {
+    normal_targets=()
+    local pkg
+    for pkg in "${targets[@]}"; do
+        if [[ -n "${package_dirs[$pkg]+x}" ]]; then
+            if is_ignored "$pkg"; then
+                echo ":: Ignoring custom/$pkg"
+                continue
             fi
+            queue_package "$pkg"
+        else
+            normal_targets+=("$pkg")
+        fi
+    done
+}
 
-            if (( $(vercmp "$current" "$version") < 0 )); then
-                update_lines+=("$pkg  $current -> $version")
-
-                if [[ -z "${queued[$dir]+x}" ]]; then
-                    update_dirs+=("$dir")
-                    queued["$dir"]=1
-                fi
+build_updates() {
+    local dir pkg files file installed filter
+    local -a archives wanted
+    for dir in "${update_dirs[@]}"; do
+        echo
+        echo ":: Building custom/$(basename "$dir")"
+        printf '%s\n' "${package_info[$dir]}" > "$dir/.SRCINFO"
+        filter=false
+        wanted=()
+        for pkg in "${!package_dirs[@]}"; do
+            [[ "${package_dirs[$pkg]}" == "$dir" ]] || continue
+            if [[ -n "${selected[$pkg]+x}" ]]; then
+                wanted+=("$pkg")
+            else
+                filter=true
             fi
-        done < <(
-            awk -F ' = ' '/^[[:space:]]*pkgname = / {print $2}' <<<"$info"
-        )
-    done < <(
-        find "$repo" -mindepth 2 -maxdepth 2 -name PKGBUILD -print0
-    )
+        done
+        if ! "$filter"; then
+            yay -Bi "$dir" "${options[@]}"
+            continue
+        fi
+
+        # Local split builds produce every output; install only selected packages.
+        yay -B "$dir" "${options[@]}"
+        files="$(cd "$dir" && makepkg --packagelist)"
+        archives=()
+        while IFS= read -r file; do
+            [[ -n "$file" ]] || continue
+            installed="$(pacman -Qp "$file")"
+            pkg="${installed%% *}"
+            if [[ -n "${selected[$pkg]+x}" && "${package_dirs[$pkg]}" == "$dir" ]]; then
+                archives+=("$file")
+            fi
+        done <<<"$files"
+        if ((${#archives[@]} != ${#wanted[@]})); then
+            echo "yayx: missing built packages from $dir" >&2
+            return 1
+        fi
+        yay -U "${options[@]}" "${archives[@]}"
+    done
 }
 
 upgrade() {
+    parse_args "${@:2}"
+    if "$read_only"; then
+        yay "$@"
+        return
+    fi
     sync_repo
+    load_packages
     scan_updates
+    select_targets
 
     if ((${#update_lines[@]})); then
         echo ":: Custom package updates:"
         printf '   %s\n' "${update_lines[@]}"
         echo
     else
-        echo ":: Custom packages are up to date."
+        echo ":: No version updates for installed custom packages."
     fi
 
     # Prevent normal yay/AUR handling packages owned by yayx.
-    ignore_args=()
-
+    local -a ignore_args=() protected
+    local ignore
     if ((${#custom_installed[@]})); then
-        ignore="$(IFS=,; echo "${custom_installed[*]}")"
+        protected=("${custom_installed[@]}" "${ignored_patterns[@]}")
+        ignore="$(IFS=,; echo "${protected[*]}")"
         ignore_args=(--ignore "$ignore")
     fi
 
-    # Upgrade normal repo/AUR packages first.
-    yay "$@" "${ignore_args[@]}"
-
-    # Then build/install our custom updates.
-    for dir in "${update_dirs[@]}"; do
-        echo
-        echo ":: Upgrading custom/$(basename "$dir")"
-        yay -Bi "$dir"
-    done
+    yay "$1" "${options[@]}" "${normal_targets[@]}" "${ignore_args[@]}"
+    build_updates
 }
 
 case "${1:-}" in
+    '')
+        upgrade -Syu
+        ;;
+
     -Su|-Syu|-Suy)
         upgrade "$@"
         ;;
 
     -S)
-        sync_repo
         shift
-
-        for pkg in "$@"; do
-            if [[ -f "$repo/$pkg/PKGBUILD" ]]; then
-                yay -Bi "$repo/$pkg"
-            else
-                yay -S "$pkg"
-            fi
-        done
+        parse_args "$@"
+        if "$read_only"; then
+            exec yay -S "$@"
+        fi
+        sync_repo
+        load_packages
+        select_targets
+        if ((${#normal_targets[@]} || ${#targets[@]} == 0)); then
+            yay -S "${options[@]}" "${normal_targets[@]}"
+        fi
+        build_updates
         ;;
 
     *)
