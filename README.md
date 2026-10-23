@@ -25,7 +25,8 @@ printcraft-bin   PdfCraft PDF viewer and editor, formerly PrintCraft
 vectorcraft-bin  Vector illustration and graphics editing
 ```
 
-## Install with Paru
+<details>
+<summary>Install with Paru</summary>
 
 Paru can use this Git repository directly as a PKGBUILD repository. Packages build locally; no binary repository or wrapper is required. Matching packages here take priority over AUR packages.
 
@@ -57,34 +58,22 @@ paru -Syu
 
 This also downloads or updates the cached Git checkout. Unpublished changes in your working tree are not used.
 
-Nordwand Mono publishes `ttf-nordwand-mono` and `otf-nordwand-mono`. Choose either font format below.
+Install any package names from the list above. You can install several at once:
 
 ```bash
-paru -S epic-lore-bin
-paru -S gossamer
-paru -S min-bin
-paru -S ollaya-bin
-paru -S pi-bin
-paru -S rayfish
-paru -S rhun-bin
-
-paru -S ttf-nordwand-mono
-paru -S otf-nordwand-mono
-
-paru -S designcraft-bin
-paru -S effectcraft-bin
-paru -S filmcraft-bin
-paru -S lightcraft-bin
-paru -S photocraft-bin
-paru -S printcraft-bin
-paru -S vectorcraft-bin
+paru -S pi-bin filmcraft-bin
 ```
+
+For Nordwand Mono, choose `ttf-nordwand-mono` or `otf-nordwand-mono`.
 
 FilmCraft is available through this PKGBUILD repository, not published to AUR by this project. Paru handles subsequent updates with `paru -Syu`. Plain yay does not read the Paru repository configuration.
 
 The optional `yayx` wrapper is retained below as an alternative.
 
-## Build locally
+</details>
+
+<details>
+<summary>Build locally</summary>
 
 ```bash
 (cd epic-lore-bin && makepkg -si)
@@ -106,7 +95,10 @@ The optional `yayx` wrapper is retained below as an alternative.
 (cd artcraft/vectorcraft-bin && makepkg -si)
 ```
 
-## yayx wrapper
+</details>
+
+<details>
+<summary>yayx wrapper</summary>
 
 From this repository's root on Arch Linux, with yay and the build tools installed:
 
@@ -122,6 +114,8 @@ The wrapper syncs a cached GitHub checkout, finds root and ArtCraft packages by 
 No arguments means `-Syu`. Wrapped forms are `-S`, `-Su`, `-Syu`, and `-Suy`; other forms and read-only commands go directly to yay. `--ignore` also applies to local updates. For new value-taking options not listed in the wrapper, use `--option=value`. Discovery or metadata errors stop the operation before yay runs.
 
 The default cache uses the GitHub version of the packaging, not unpublished changes in your working tree.
+
+</details>
 
 ## Automation
 
