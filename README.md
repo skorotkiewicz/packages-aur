@@ -1,43 +1,43 @@
 # AUR Packages
 
-PKGBUILD repository for Paru and AUR publishing.
+A PKGBUILD repository for Paru and AUR publishing.
 
 ## Packages
 
 ```text
-epic-lore-bin  Epic Games Lore prebuilt binaries
+epic-lore-bin  Epic Games Lore binaries
 gossamer       Gossamer language toolchain
-min-bin        Min Browser prebuilt package
-ollaya-bin     Ollaya prebuilt binaries
-pi-bin         Pi prebuilt binaries
-rayfish        Rayfish prebuilt binaries
-rhun-bin       Rhun code editor prebuilt binaries
+min-bin        Min Browser
+ollaya-bin     Ollaya binaries
+pi-bin         Pi binaries
+rayfish        Rayfish binaries
+rhun-bin       Rhun code editor
 
-ttf-nordwand-mono  Nordwand Mono prebuilt TrueType fonts
-otf-nordwand-mono  Nordwand Mono prebuilt OpenType fonts
+ttf-nordwand-mono  Nordwand Mono (TrueType)
+otf-nordwand-mono  Nordwand Mono (OpenType)
 
 designcraft-bin  Page layout and desktop publishing
 effectcraft-bin  Motion graphics and visual effects
-filmcraft-bin    FilmCraft video editor, custom repository only
+filmcraft-bin    FilmCraft video editor (this repo only, not on AUR)
 lightcraft-bin   Photo library and raw development
-photocraft-bin   Layer-based image and photo editing
-printcraft-bin   PdfCraft PDF viewer and editor, formerly PrintCraft
-vectorcraft-bin  Vector illustration and graphics editing
+photocraft-bin   Layer-based photo editing
+printcraft-bin   PdfCraft PDF viewer and editor (formerly PrintCraft)
+vectorcraft-bin  Vector illustration
 ```
 
 <details>
-<summary>Install with Paru</summary>
+<summary><strong>Install with Paru</strong></summary>
 
-Paru can use this Git repository directly as a PKGBUILD repository. Packages build locally; no binary repository or wrapper is required. Matching packages here take priority over AUR packages.
+Paru can use this Git repo directly as a custom source. Packages here take priority over the standard AUR.
 
-Install Paru first if needed, for example with an existing yay installation:
+Need Paru? If you have yay, it's one command:
 
 ```bash
 yay -S paru
 # yay: "You're making me install my replacement?" :D
 ```
 
-Add the following section to your active Paru configuration. Paru uses `$PARU_CONF` if set, otherwise your user configuration at `$XDG_CONFIG_HOME/paru/paru.conf` or `~/.config/paru/paru.conf` if it exists, and otherwise `/etc/paru.conf`. Edit the active file rather than replacing your existing settings.
+Add this to your Paru config (`$PARU_CONF`, `~/.config/paru/paru.conf`, or `/etc/paru.conf`, whichever Paru is actually using). Add it to the existing file, don't replace it.
 
 ```ini
 [packages-aur]
@@ -46,34 +46,21 @@ Depth = 3
 GenerateSrcinfo
 ```
 
-`Depth = 3` includes both root packages and `artcraft/*`, without scanning the deeper `.github/archive/pi-bin` recipe. `GenerateSrcinfo` refreshes package metadata after changes such as renames. Package review remains enabled.
+* **`Depth = 3`**: Ensures Paru finds packages in subdirectories like `artcraft/*`.
+* **`GenerateSrcinfo`**: Refreshes metadata automatically.
+* *Note:* If your config restricts sources (e.g., `AurOnly`), allow PKGBUILDs by setting `Mode = repo,aur,pkgbuilds`.
 
-If your `[options]` section sets `AurOnly`, `RepoOnly`, `PkgbuildsOnly`, or a restricted `Mode`, remove the restriction or set `Mode = repo,aur,pkgbuilds` to enable all three sources.
-
-Refresh the configured repositories and upgrade with:
+Once added, just sync and install:
 
 ```bash
 paru -Syu
-```
-
-This also downloads or updates the cached Git checkout. Unpublished changes in your working tree are not used.
-
-Install any package names from the list above. You can install several at once:
-
-```bash
 paru -S pi-bin filmcraft-bin
 ```
-
-For Nordwand Mono, choose `ttf-nordwand-mono` or `otf-nordwand-mono`.
-
-FilmCraft is available through this PKGBUILD repository, not published to AUR by this project. Paru handles subsequent updates with `paru -Syu`. Plain yay does not read the Paru repository configuration.
-
-The optional `yayx` wrapper is retained below as an alternative.
 
 </details>
 
 <details>
-<summary>Build locally</summary>
+<summary><strong>Build locally</strong></summary>
 
 ```bash
 (cd epic-lore-bin && makepkg -si)
@@ -98,9 +85,7 @@ The optional `yayx` wrapper is retained below as an alternative.
 </details>
 
 <details>
-<summary>yayx wrapper</summary>
-
-From this repository's root on Arch Linux, with yay and the build tools installed:
+<summary><strong>yayx wrapper</strong></summary>
 
 ```bash
 ./yayx -S filmcraft-bin
@@ -109,11 +94,7 @@ From this repository's root on Arch Linux, with yay and the build tools installe
 ./yayx -Syu --ignore 'pi-bin,*nordwand*'
 ```
 
-The wrapper syncs a cached GitHub checkout, finds root and ArtCraft packages by their actual package names, and protects installed repo packages from normal AUR upgrades. Local builds refresh `.SRCINFO` first. Split packages build once and install only the selected outputs.
-
-No arguments means `-Syu`. Wrapped forms are `-S`, `-Su`, `-Syu`, and `-Suy`; other forms and read-only commands go directly to yay. `--ignore` also applies to local updates. For new value-taking options not listed in the wrapper, use `--option=value`. Discovery or metadata errors stop the operation before yay runs.
-
-The default cache uses the GitHub version of the packaging, not unpublished changes in your working tree.
+Run it without arguments to default to a full upgrade (`-Syu`). Most standard `yay` flags (like `--ignore`) will pass right through.
 
 </details>
 
