@@ -34,8 +34,9 @@ Paru can use this Git repo directly as a custom source. Packages here take prior
 Need Paru? If you have yay, it's one command:
 
 ```bash
-yay -S paru
-# yay: "You're making me install my replacement?" :D
+sudo pacman -S --needed base-devel
+git clone https://aur.archlinux.org/paru.git && cd paru
+makepkg -si
 ```
 
 Add this to your Paru config (`$PARU_CONF`, `~/.config/paru/paru.conf`, or `/etc/paru.conf`, whichever Paru is actually using). Add it to the existing file, don't replace it.
