@@ -12,6 +12,7 @@ ollaya-bin     Ollaya binaries
 pi-bin         Pi binaries
 rayfish        Rayfish binaries
 rhun-bin       Rhun code editor
+sapling-scm-bin  Sapling Git-compatible source control, custom build
 
 ttf-nordwand-mono  Nordwand Mono (TrueType)
 otf-nordwand-mono  Nordwand Mono (OpenType)
@@ -70,6 +71,7 @@ paru -S pi-bin filmcraft-bin
 (cd pi-bin && makepkg -si)
 (cd rayfish && makepkg -si)
 (cd rhun-bin && makepkg -si)
+(cd sapling-scm-bin && makepkg -si)
 
 (cd nordwand-mono && makepkg -si)
 

@@ -1,0 +1,33 @@
+# Maintainer: Sebastian Korotkiewicz <skorotkiewicz@gmail.com>
+pkgname=sapling-scm-bin
+pkgver=0.0.0
+pkgrel=1
+epoch=1
+pkgdesc='Scalable, Git-compatible source control system (prebuilt binaries)'
+arch=('x86_64' 'aarch64')
+url='https://github.com/facebook/sapling'
+license=('GPL-2.0-only' 'MIT')
+depends=('glibc' 'gcc-libs' 'zlib' 'curl' 'nodejs')
+optdepends=('git: Git repository support'
+            'github-cli: GitHub integration'
+            'watchman: faster file watching')
+provides=('sapling-scm')
+conflicts=('sapling-scm' 'sl')
+options=(!strip !debug)
+
+_tag="${pkgver%.*}-${pkgver##*.}"
+source=("LICENSE::https://raw.githubusercontent.com/facebook/sapling/$_tag/LICENSE"
+        "LICENSE-ISL::https://raw.githubusercontent.com/facebook/sapling/$_tag/addons/LICENSE")
+source_x86_64=("sapling-$pkgver-linux-x64.tar.xz::$url/releases/download/$_tag/sapling-$_tag-linux-x64.tar.xz")
+source_aarch64=("sapling-$pkgver-linux-arm64.tar.xz::$url/releases/download/$_tag/sapling-$_tag-linux-arm64.tar.xz")
+sha256sums=('SKIP' 'SKIP')
+sha256sums_x86_64=('SKIP')
+sha256sums_aarch64=('SKIP')
+
+package() {
+  install -d "$pkgdir/usr/lib/sapling-scm" "$pkgdir/usr/bin"
+  cp -a --no-preserve=ownership "$srcdir/sl" "$srcdir/lib" "$srcdir/isl-dist.tar.xz" "$pkgdir/usr/lib/sapling-scm/"
+  ln -s /usr/lib/sapling-scm/sl "$pkgdir/usr/bin/sl"
+  install -Dm644 "$srcdir/LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  install -Dm644 "$srcdir/LICENSE-ISL" "$pkgdir/usr/share/licenses/$pkgname/LICENSE-ISL"
+}
