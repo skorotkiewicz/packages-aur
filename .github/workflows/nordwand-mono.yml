@@ -32,9 +32,10 @@ jobs:
           useradd -m builder
 
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
+          persist-credentials: false
 
       - name: Set ownership for builder user
         run: chown -R builder:builder "$GITHUB_WORKSPACE"
@@ -114,9 +115,10 @@ jobs:
       contents: read
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: main
+          persist-credentials: false
 
       - name: Publish split font package to AUR
         uses: KSXGitHub/github-actions-deploy-aur@v4.1.3
