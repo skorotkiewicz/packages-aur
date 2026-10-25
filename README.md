@@ -31,7 +31,7 @@ vectorcraft-bin  Vector illustration
 
 Paru can use this Git repo directly as a custom source. Packages here take priority over the standard AUR.
 
-Need Paru? If you have yay, it's one command:
+Need Paru? It's simple:
 
 ```bash
 sudo pacman -S --needed base-devel
