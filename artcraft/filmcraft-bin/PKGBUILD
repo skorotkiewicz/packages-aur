@@ -1,7 +1,7 @@
 # Maintainer: Sebastian Korotkiewicz <skorotkiewicz@gmail.com>
 pkgname=filmcraft-bin
 _pkgname=filmcraft
-pkgver=0.12.0
+pkgver=0.13.0
 pkgrel=1
 pkgdesc='Video editing, color grading and audio (prebuilt binaries)'
 arch=('x86_64' 'aarch64')
@@ -25,14 +25,14 @@ source=("$_pkgname-$pkgver-NOTICE.txt::https://raw.githubusercontent.com/storyto
         "$_pkgname-$pkgver-OFL-NotoSerif.txt::https://raw.githubusercontent.com/storytold/$_pkgname/v$pkgver/assets/fonts/OFL-NotoSerif.txt")
 source_x86_64=("$url/releases/download/v$pkgver/$_pkgname-$pkgver-linux-x86_64.tar.gz")
 source_aarch64=("$url/releases/download/v$pkgver/$_pkgname-$pkgver-linux-aarch64.tar.gz")
-sha256sums=('5761787313b9d6c13dd5f03da2e04209ad7bd08eff8920edfd184141d791195c'
+sha256sums=('2739937ee1602700973da804d4c01da8d65119fadacb723242eebedb1a7959e9'
             'd30f3aee39b72be3d1c1bdf994b75470ff53a354ca8ba6039c3a70a647b732fe'
             '79d32f0c9576355f9eaedf8ba8727a149cf3e42ed753ff5d25ac882bf072e27a'
             '262481e844521b326f5ecd053e59b98c8b2da78c8ee1bdbb6e8174305e54935a'
             'a76abf002c49097d146e86740a3105a5d00450b1592e820a1109a8c5680cd697'
             'cee9892f9f0cc8fe882c9e9537ee6a89621d86ee7ceaf70b02e2b2b1c25c061a')
-sha256sums_x86_64=('ddff0a2ec0d89e5e9e65644ed724b5b79959600b1602fd4ea6653b5a54bf88fd')
-sha256sums_aarch64=('83714c4a73774a3f54a3d2bf52ae0065d3fb8ca8c781deb7cb3450f9b4e74568')
+sha256sums_x86_64=('40e9d685fb3ed1b0a21c9c02211f1a8499e09a47c551244ce7ee80f2584d3a9b')
+sha256sums_aarch64=('e55061da7f46dd1465379ac071eb854993722f4ece87ef1a8b70b265927b6894')
 
 package() {
   cd "$srcdir/$_pkgname-$pkgver-linux-$CARCH"
