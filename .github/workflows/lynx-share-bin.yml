@@ -1,0 +1,118 @@
+name: Update and Publish lynx-share-bin to AUR
+
+on:
+  schedule:
+    - cron: '40 3 * * *'
+  workflow_dispatch:
+
+jobs:
+  check-and-build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    container:
+      image: archlinux:base-devel
+    outputs:
+      changed: ${{ steps.versions.outputs.changed }}
+      latest: ${{ steps.versions.outputs.latest }}
+
+    steps:
+      - name: Install dependencies and create builder user
+        run: |
+          pacman -Syu --noconfirm
+          pacman -S --noconfirm git openssh jq curl pacman-contrib sudo
+          useradd -m builder
+          echo "builder ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set ownership for builder user
+        run: chown -R builder:builder "$GITHUB_WORKSPACE"
+
+      - name: Configure Git for builder user
+        run: |
+          sudo -u builder -E HOME=/home/builder git config --global user.name "github-actions[bot]"
+          sudo -u builder -E HOME=/home/builder git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Get current and latest versions
+        id: versions
+        run: |
+          current_ver=$(grep -oP '^pkgver=\K.*' lynx-share-bin/PKGBUILD)
+          # Include prereleases; GitHub's /latest endpoint omits alpha releases.
+          latest_tag=$(curl -fsSL 'https://api.github.com/repos/Ka1-S/LYNX/releases?per_page=20' | jq -er '[.[] | select(.draft == false) | select(any(.assets[]; .name | endswith("-linux-x86_64.tar.gz")))] | first | .tag_name | select(type == "string" and length > 0)')
+          case "$latest_tag" in
+            *[!a-zA-Z0-9._+-]*) echo "Invalid release tag: $latest_tag" >&2; exit 1 ;;
+          esac
+          latest_ver=$(printf '%s\n' "$latest_tag" | sed 's/^v//; s/-//g')
+          changed=false
+          if [ "$current_ver" != "$latest_ver" ] || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            changed=true
+          fi
+          echo "current=$current_ver" >> "$GITHUB_OUTPUT"
+          echo "latest=$latest_ver" >> "$GITHUB_OUTPUT"
+          echo "tag=$latest_tag" >> "$GITHUB_OUTPUT"
+          echo "changed=$changed" >> "$GITHUB_OUTPUT"
+          echo "Current version: $current_ver"
+          echo "Latest version: $latest_ver"
+
+      - name: Update PKGBUILD and checksums
+        if: steps.versions.outputs.changed == 'true'
+        run: |
+          latest_ver="${{ steps.versions.outputs.latest }}"
+          latest_tag="${{ steps.versions.outputs.tag }}"
+          sed -i "s/^_tag=.*/_tag=$latest_tag/" lynx-share-bin/PKGBUILD
+          if [ "${{ steps.versions.outputs.current }}" != "$latest_ver" ]; then
+            sed -i "s/^pkgver=.*/pkgver=$latest_ver/" lynx-share-bin/PKGBUILD
+            sed -i "s/^pkgrel=.*/pkgrel=1/" lynx-share-bin/PKGBUILD
+          fi
+          sudo -u builder -E HOME=/home/builder bash -lc 'cd lynx-share-bin && updpkgsums && makepkg --printsrcinfo > .SRCINFO'
+
+      - name: Build package
+        if: steps.versions.outputs.changed == 'true'
+        run: sudo -u builder -E HOME=/home/builder bash -lc 'cd lynx-share-bin && makepkg -fs --noconfirm'
+
+      - name: Push updated packaging to GitHub
+        if: steps.versions.outputs.changed == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          sudo -u builder -E HOME=/home/builder git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          sudo -u builder -E HOME=/home/builder git add lynx-share-bin/PKGBUILD lynx-share-bin/.SRCINFO
+          sudo -u builder -E HOME=/home/builder git commit -m "update: ${{ steps.versions.outputs.latest }}" || true
+          sudo -u builder -E HOME=/home/builder git push origin main
+
+      - name: Summary
+        run: |
+          if [ "${{ steps.versions.outputs.changed }}" = "true" ]; then
+            echo "Built and pushed version ${{ steps.versions.outputs.latest }} to GitHub."
+          else
+            echo "No new version available. Current: ${{ steps.versions.outputs.current }}"
+          fi
+
+  aur-publish:
+    needs: check-and-build
+    if: needs.check-and-build.outputs.changed == 'true'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+          persist-credentials: false
+
+      - name: Publish AUR package
+        uses: KSXGitHub/github-actions-deploy-aur@v4.1.3
+        with:
+          pkgname: lynx-share-bin
+          pkgbuild: ./lynx-share-bin/PKGBUILD
+          assets: |
+            lynx-share-bin/.SRCINFO
+          commit_username: ${{ secrets.AUR_USERNAME }}
+          commit_email: ${{ secrets.AUR_EMAIL }}
+          ssh_private_key: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
+          commit_message: "aur: ${{ needs.check-and-build.outputs.latest }}"
+          ssh_keyscan_types: rsa,ecdsa,ed25519

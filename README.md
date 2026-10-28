@@ -7,6 +7,7 @@ A PKGBUILD repository for Paru and AUR publishing.
 ```text
 epic-lore-bin  Epic Games Lore binaries
 gossamer       Gossamer language toolchain
+lynx-share-bin  LYNX digital audio workstation
 min-bin        Min Browser
 ollaya-bin     Ollaya binaries
 pi-bin         Pi binaries
@@ -67,6 +68,7 @@ paru -S pi-bin filmcraft-bin
 ```bash
 (cd epic-lore-bin && makepkg -si)
 (cd gossamer && makepkg -si)
+(cd lynx-share-bin && makepkg -si)
 (cd minbrowser && makepkg -si)
 (cd ollaya-bin && makepkg -si)
 (cd pi-bin && makepkg -si)
