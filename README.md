@@ -7,6 +7,7 @@ A PKGBUILD repository for Paru and AUR publishing.
 ```text
 epic-lore-bin  Epic Games Lore binaries
 gossamer       Gossamer language toolchain
+lemon-studio-git  Lemon Studio digital audio workstation, pre-alpha
 lynx-share-bin  LYNX digital audio workstation
 min-bin        Min Browser
 ollaya-bin     Ollaya binaries
@@ -68,6 +69,7 @@ paru -S pi-bin filmcraft-bin
 ```bash
 (cd epic-lore-bin && makepkg -si)
 (cd gossamer && makepkg -si)
+(cd lemon-studio-git && makepkg -si)
 (cd lynx-share-bin && makepkg -si)
 (cd minbrowser && makepkg -si)
 (cd ollaya-bin && makepkg -si)
@@ -105,4 +107,4 @@ Run it without arguments to default to a full upgrade (`-Syu`). Most standard `y
 
 ## Automation
 
-GitHub Actions checks upstream releases, updates `PKGBUILD`, regenerates `.SRCINFO`, and pushes the updated package files.
+GitHub Actions checks upstream releases or Git commits, updates `PKGBUILD`, regenerates `.SRCINFO`, and pushes the updated package files.
