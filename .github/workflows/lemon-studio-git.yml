@@ -1,12 +1,10 @@
 name: Update and Publish lemon-studio-git to AUR
 
 on:
-  schedule:
-    - cron: '20 4 * * *'
   workflow_dispatch:
 
 jobs:
-  check-and-build:
+  check-and-update:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -58,11 +56,6 @@ jobs:
         if: steps.versions.outputs.changed == 'true'
         run: sudo -u builder -E HOME=/home/builder bash -lc 'cd lemon-studio-git && makepkg --printsrcinfo > .SRCINFO'
 
-      - name: Build package
-        if: steps.versions.outputs.changed == 'true'
-        # Build the revision used for metadata, not a newer upstream commit.
-        run: sudo -u builder -E HOME=/home/builder bash -lc 'cd lemon-studio-git && makepkg -fs --holdver --noconfirm'
-
       - name: Push updated packaging to GitHub
         if: steps.versions.outputs.changed == 'true'
         env:
@@ -76,14 +69,14 @@ jobs:
       - name: Summary
         run: |
           if [ "${{ steps.versions.outputs.changed }}" = "true" ]; then
-            echo "Built and pushed version ${{ steps.versions.outputs.latest }} to GitHub."
+            echo "Updated packaging for version ${{ steps.versions.outputs.latest }} on GitHub."
           else
             echo "No new version available. Current: ${{ steps.versions.outputs.current }}"
           fi
 
   aur-publish:
-    needs: check-and-build
-    if: needs.check-and-build.outputs.changed == 'true'
+    needs: check-and-update
+    if: needs.check-and-update.outputs.changed == 'true'
     runs-on: ubuntu-latest
 
     steps:
@@ -97,10 +90,11 @@ jobs:
         with:
           pkgname: lemon-studio-git
           pkgbuild: ./lemon-studio-git/PKGBUILD
+          test: 'false'
           assets: |
             lemon-studio-git/.SRCINFO
           commit_username: ${{ secrets.AUR_USERNAME }}
           commit_email: ${{ secrets.AUR_EMAIL }}
           ssh_private_key: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
-          commit_message: "aur: ${{ needs.check-and-build.outputs.latest }}"
+          commit_message: "aur: ${{ needs.check-and-update.outputs.latest }}"
           ssh_keyscan_types: rsa,ecdsa,ed25519
