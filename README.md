@@ -5,6 +5,7 @@ A PKGBUILD repository for Paru and AUR publishing.
 ## Packages
 
 ```text
+atto-netbsd-git  NetBSD Atto Emacs-like terminal editor
 epic-lore-bin  Epic Games Lore binaries
 gossamer       Gossamer language toolchain
 lemon-studio-git  Lemon Studio digital audio workstation, pre-alpha
@@ -67,6 +68,7 @@ paru -S pi-bin filmcraft-bin
 <summary><strong>Build locally</strong></summary>
 
 ```bash
+(cd atto-netbsd-git && makepkg -si)
 (cd epic-lore-bin && makepkg -si)
 (cd gossamer && makepkg -si)
 (cd lemon-studio-git && makepkg -si)
