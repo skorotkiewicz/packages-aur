@@ -5,6 +5,7 @@ A PKGBUILD repository for Paru and AUR publishing.
 ## Packages
 
 ```text
+atto-editor-git  Original Atto Emacs-like terminal editor
 atto-netbsd-git  NetBSD Atto Emacs-like terminal editor
 epic-lore-bin  Epic Games Lore binaries
 gossamer       Gossamer language toolchain
@@ -68,6 +69,7 @@ paru -S pi-bin filmcraft-bin
 <summary><strong>Build locally</strong></summary>
 
 ```bash
+(cd atto-editor-git && makepkg -si)
 (cd atto-netbsd-git && makepkg -si)
 (cd epic-lore-bin && makepkg -si)
 (cd gossamer && makepkg -si)

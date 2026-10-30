@@ -1,0 +1,85 @@
+name: Update and Publish atto-editor-git to AUR
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check-and-update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    container:
+      image: archlinux:base-devel
+    outputs:
+      latest: ${{ steps.versions.outputs.latest }}
+
+    steps:
+      - name: Install dependencies and create builder user
+        run: |
+          pacman -Syu --noconfirm
+          pacman -S --noconfirm git sudo
+          useradd -m builder
+          echo "builder ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          ref: main
+          persist-credentials: false
+
+      - name: Set ownership for builder user
+        run: chown -R builder:builder "$GITHUB_WORKSPACE"
+
+      - name: Configure Git for builder user
+        run: |
+          sudo -u builder -E HOME=/home/builder git config --global user.name "github-actions[bot]"
+          sudo -u builder -E HOME=/home/builder git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Refresh Git version and package metadata
+        id: versions
+        run: |
+          sudo -u builder -E HOME=/home/builder bash -lc 'cd atto-editor-git && makepkg --nobuild --nodeps --noprepare && makepkg --printsrcinfo > .SRCINFO'
+          latest_ver=$(grep -oP '^pkgver=\K.*' atto-editor-git/PKGBUILD)
+          echo "latest=$latest_ver" >> "$GITHUB_OUTPUT"
+          echo "Latest version: $latest_ver"
+
+      - name: Push updated packaging to GitHub
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          sudo -u builder -E HOME=/home/builder bash -ec '
+            git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+            git add atto-editor-git/PKGBUILD atto-editor-git/.SRCINFO
+            if ! git diff --cached --quiet; then
+              git commit -m "update: ${{ steps.versions.outputs.latest }}"
+            fi
+            git push origin main
+          '
+
+  aur-publish:
+    needs: check-and-update
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+          persist-credentials: false
+
+      - name: Publish AUR package
+        uses: KSXGitHub/github-actions-deploy-aur@v4.1.3
+        with:
+          pkgname: atto-editor-git
+          pkgbuild: ./atto-editor-git/PKGBUILD
+          test: 'false'
+          assets: |
+            atto-editor-git/.SRCINFO
+            atto-editor-git/atto.1
+          commit_username: ${{ secrets.AUR_USERNAME }}
+          commit_email: ${{ secrets.AUR_EMAIL }}
+          ssh_private_key: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
+          commit_message: "aur: ${{ needs.check-and-update.outputs.latest }}"
+          ssh_keyscan_types: rsa,ecdsa,ed25519
