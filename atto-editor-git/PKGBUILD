@@ -1,6 +1,6 @@
 # Maintainer: Sebastian Korotkiewicz <skorotkiewicz@gmail.com>
 pkgname=atto-editor-git
-pkgver=0.0.0
+pkgver=r115.g0b2c5bb
 pkgrel=1
 pkgdesc='Small Emacs-like terminal editor by Hugh Barney'
 arch=('x86_64' 'aarch64')
