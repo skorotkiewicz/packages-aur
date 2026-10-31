@@ -1,4 +1,7 @@
 # Maintainer: Sebastian Korotkiewicz <skorotkiewicz@gmail.com>
+#
+# Prospero: a new coding harness for a more civilized age
+# https://nullprogram.com/blog/2026/10/31/
 pkgname=prospero-bin
 pkgver=0.9.0
 pkgrel=1
