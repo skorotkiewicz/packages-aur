@@ -1,0 +1,30 @@
+# Maintainer: Sebastian Korotkiewicz <skorotkiewicz@gmail.com>
+pkgname=memdoor-bin
+pkgver=0.0.0
+pkgrel=1
+pkgdesc='Coding and automation agent in a single CLI binary (prebuilt binaries)'
+arch=('x86_64' 'aarch64')
+url='https://github.com/guregodevo/memdoor'
+license=('Apache-2.0')
+depends=('bash' 'ca-certificates')
+optdepends=('git: Git workspaces and worktrees'
+            'openssh: remote gateways over SSH'
+            'xdg-utils: open browser authentication links')
+provides=("memdoor=$pkgver")
+conflicts=('memdoor')
+options=(!strip !debug)
+source=("LICENSE-$pkgver::https://raw.githubusercontent.com/guregodevo/memdoor/v$pkgver/LICENSE"
+        "NOTICE-$pkgver::https://raw.githubusercontent.com/guregodevo/memdoor/v$pkgver/NOTICE"
+        "GETTING_STARTED-$pkgver.md::https://raw.githubusercontent.com/guregodevo/memdoor/v$pkgver/GETTING_STARTED.md")
+source_x86_64=("memdoor-$pkgver-linux-x86_64::$url/releases/download/v$pkgver/memdoor-linux-amd64")
+source_aarch64=("memdoor-$pkgver-linux-aarch64::$url/releases/download/v$pkgver/memdoor-linux-arm64")
+sha256sums=('SKIP' 'SKIP' 'SKIP')
+sha256sums_x86_64=('SKIP')
+sha256sums_aarch64=('SKIP')
+
+package() {
+  install -Dm755 "$srcdir/memdoor-$pkgver-linux-$CARCH" "$pkgdir/usr/bin/memdoor"
+  install -Dm644 "$srcdir/LICENSE-$pkgver" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  install -Dm644 "$srcdir/NOTICE-$pkgver" "$pkgdir/usr/share/licenses/$pkgname/NOTICE"
+  install -Dm644 "$srcdir/GETTING_STARTED-$pkgver.md" "$pkgdir/usr/share/doc/$pkgname/GETTING_STARTED.md"
+}

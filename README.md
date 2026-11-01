@@ -11,6 +11,7 @@ epic-lore-bin  Epic Games Lore binaries
 gossamer       Gossamer language toolchain
 lemon-studio-git  Lemon Studio digital audio workstation, pre-alpha
 lynx-share-bin  LYNX digital audio workstation
+memdoor-bin    Memdoor coding and automation agent
 min-bin        Min Browser
 ollaya-bin     Ollaya binaries
 pi-bin         Pi binaries
@@ -76,6 +77,7 @@ paru -S pi-bin filmcraft-bin
 (cd gossamer && makepkg -si)
 (cd lemon-studio-git && makepkg -si)
 (cd lynx-share-bin && makepkg -si)
+(cd memdoor-bin && makepkg -si)
 (cd minbrowser && makepkg -si)
 (cd ollaya-bin && makepkg -si)
 (cd pi-bin && makepkg -si)
