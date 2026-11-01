@@ -1,7 +1,7 @@
 # Maintainer: Sebastian Korotkiewicz <skorotkiewicz@gmail.com>
 pkgname=printcraft-bin
 _pkgname=pdfcraft
-pkgver=0.16.1
+pkgver=0.17.0
 pkgrel=1
 pkgdesc='PdfCraft PDF viewer and editor (prebuilt binaries, formerly PrintCraft)'
 arch=('x86_64' 'aarch64')
@@ -27,7 +27,7 @@ source=("$_pkgname-$pkgver-NOTICE.txt::https://raw.githubusercontent.com/storyto
         "$_pkgname-$pkgver-LICENSE-FOXIT.txt::https://raw.githubusercontent.com/storytold/$_pkgname/v$pkgver/vendor/hayro-interpret/assets/LICENSE_FOXIT")
 source_x86_64=("$url/releases/download/v$pkgver/$_pkgname-$pkgver-linux-x86_64.tar.gz")
 source_aarch64=("$url/releases/download/v$pkgver/$_pkgname-$pkgver-linux-aarch64.tar.gz")
-sha256sums=('017e547d49f181b0e62be4579ae5d90a6b831fb8cf5a8522d95813bd5efc2cad'
+sha256sums=('9f854f730719af962cd840529324d089e05e68a30bd245c50e33f96e009b4314'
             '0f33f48e7a96cd359d4e4e5b11424b13cebeb59cc70c77928186695e4173585c'
             'b768acafe6cbad8247eedf86b5b5381feefcd4ee0f8c7808b86811bc687cf37b'
             '6f090277c00af96651ce6dbcc38ff1591047a3bffef486e80b6a32e8276a8201'
@@ -35,8 +35,8 @@ sha256sums=('017e547d49f181b0e62be4579ae5d90a6b831fb8cf5a8522d95813bd5efc2cad'
             'a76abf002c49097d146e86740a3105a5d00450b1592e820a1109a8c5680cd697'
             'b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57'
             'b578cdd2345840ada550bd12519533812320d5f1d21cf4c1c7e1b1b0a31c98b7')
-sha256sums_x86_64=('bb36e071d10a14af5121299a0eed8d7c5db8e5c7580b6cbebec085c41d1bfe0a')
-sha256sums_aarch64=('2908e9127bf80f0bf889bd4c292980bc06e47f74999a5bf6dd09357e6f4e58a4')
+sha256sums_x86_64=('f9814a7a0af77b905adba1c3079caedee537586797043cf5af9503914f6abec5')
+sha256sums_aarch64=('31aed5e4d7cbc1bf0d8b1da0659dcb0c6cd6114bd5783c0fdaabb16d29a273bd')
 
 package() {
   cd "$srcdir/$_pkgname-$pkgver-linux-$CARCH"
