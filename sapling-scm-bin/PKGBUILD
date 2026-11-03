@@ -1,6 +1,6 @@
 # Maintainer: Sebastian Korotkiewicz <skorotkiewicz@gmail.com>
 pkgname=sapling-scm-bin
-pkgver=0.2.20261028.123539+7415fb2f
+pkgver=0.2.20261102.153821+a53273dc
 pkgrel=1
 epoch=1
 pkgdesc='Scalable, Git-compatible source control system (prebuilt binaries)'
@@ -22,8 +22,8 @@ source_x86_64=("sapling-$pkgver-linux-x64.tar.xz::$url/releases/download/$_tag/s
 source_aarch64=("sapling-$pkgver-linux-arm64.tar.xz::$url/releases/download/$_tag/sapling-$_tag-linux-arm64.tar.xz")
 sha256sums=('8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643'
             '2d4c3d00d67067461412a2d9a2f3f8b7b9cda62b3db501e4b6844ccf35c949aa')
-sha256sums_x86_64=('9504b9514ed16dce3b5443811f7625742a363e66a44b316bcaad70a9d013b274')
-sha256sums_aarch64=('6257b24ca41a3b430f46bdcedecd42d3f2e6f2e1807645f9b2b5a0c204e03dd5')
+sha256sums_x86_64=('7c6f88ada401fed0cab1e6c06a7e7924d353f91977a85bf5bcf09b535488f5a0')
+sha256sums_aarch64=('ac36e1e68668a241f91d414e945e1efc7a1e42b9607930534180dd601c514a4d')
 
 package() {
   install -d "$pkgdir/usr/lib/sapling-scm" "$pkgdir/usr/bin"
