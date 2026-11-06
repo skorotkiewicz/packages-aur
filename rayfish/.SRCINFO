@@ -1,6 +1,6 @@
 pkgbase = rayfish
 	pkgdesc = P2P mesh VPN powered by iroh
-	pkgver = 0.5.15
+	pkgver = 0.5.16
 	pkgrel = 1
 	url = https://github.com/rayfish/rayfish
 	arch = x86_64
@@ -8,9 +8,9 @@ pkgbase = rayfish
 	license = MPL-2.0
 	depends = gcc-libs
 	options = !strip
-	source_x86_64 = ray-linux-x86_64-0.5.15::https://github.com/rayfish/rayfish/releases/download/v0.5.15/ray-linux-x86_64
-	sha256sums_x86_64 = b3e975e76d4b887ae6f8db8c4e09e02934ed69d3ec1b292b86d9c0d675798671
-	source_aarch64 = ray-linux-aarch64-0.5.15::https://github.com/rayfish/rayfish/releases/download/v0.5.15/ray-linux-aarch64
-	sha256sums_aarch64 = d93ed7831eda74f2c8fe098ebc07f1ff6a34ece40fb622e4d795d26b9a001e8d
+	source_x86_64 = ray-linux-x86_64-0.5.16::https://github.com/rayfish/rayfish/releases/download/v0.5.16/ray-linux-x86_64
+	sha256sums_x86_64 = 321fd00c428a6f2d23544f12708e89ad37d84c34e7c3f110a4d2b3c64a1444f0
+	source_aarch64 = ray-linux-aarch64-0.5.16::https://github.com/rayfish/rayfish/releases/download/v0.5.16/ray-linux-aarch64
+	sha256sums_aarch64 = eb94a1e6ccad0874895147a3be88d39203e26fadc8e82d51e14609cc15725472
 
 pkgname = rayfish
