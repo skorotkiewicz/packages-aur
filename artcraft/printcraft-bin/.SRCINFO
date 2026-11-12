@@ -1,6 +1,6 @@
 pkgbase = printcraft-bin
 	pkgdesc = PdfCraft PDF viewer and editor (prebuilt binaries, formerly PrintCraft)
-	pkgver = 0.20.0
+	pkgver = 0.21.1
 	pkgrel = 1
 	url = https://github.com/storytold/pdfcraft
 	arch = x86_64
@@ -26,21 +26,21 @@ pkgbase = printcraft-bin
 	optdepends = vulkan-driver: hardware-accelerated Vulkan rendering
 	optdepends = xdg-desktop-portal: native file dialogs
 	optdepends = xdg-utils: open external links
-	provides = pdfcraft=0.20.0
-	provides = printcraft=0.20.0
+	provides = pdfcraft=0.21.1
+	provides = printcraft=0.21.1
 	conflicts = pdfcraft
 	conflicts = pdfcraft-bin
 	conflicts = printcraft
 	options = !strip
-	source = pdfcraft-0.20.0-NOTICE.txt::https://raw.githubusercontent.com/storytold/pdfcraft/v0.20.0/NOTICE
-	source = pdfcraft-0.20.0-LICENSE-brand.txt::https://raw.githubusercontent.com/storytold/pdfcraft/v0.20.0/docs/brand/LICENSE-brand.txt
-	source = pdfcraft-0.20.0-LICENSE-app-icon.txt::https://raw.githubusercontent.com/storytold/pdfcraft/v0.20.0/assets/app-icon/LICENSE.txt
-	source = pdfcraft-0.20.0-OFL-DancingScript.txt::https://raw.githubusercontent.com/storytold/pdfcraft/v0.20.0/assets/fonts/OFL-DancingScript.txt
-	source = pdfcraft-0.20.0-OFL-Inter.txt::https://raw.githubusercontent.com/storytold/pdfcraft/v0.20.0/assets/fonts/OFL-Inter.txt
-	source = pdfcraft-0.20.0-OFL-JetBrainsMono.txt::https://raw.githubusercontent.com/storytold/pdfcraft/v0.20.0/assets/fonts/OFL-JetBrainsMono.txt
-	source = pdfcraft-0.20.0-LICENSE-lucide.txt::https://raw.githubusercontent.com/storytold/pdfcraft/v0.20.0/assets/icons/LICENSE-lucide.txt
-	source = pdfcraft-0.20.0-LICENSE-FOXIT.txt::https://raw.githubusercontent.com/storytold/pdfcraft/v0.20.0/vendor/hayro-interpret/assets/LICENSE_FOXIT
-	sha256sums = d9ba162ad2bc95d22ab9885065e253bb823bd6795068828e7b39858344b660eb
+	source = pdfcraft-0.21.1-NOTICE.txt::https://raw.githubusercontent.com/storytold/pdfcraft/v0.21.1/NOTICE
+	source = pdfcraft-0.21.1-LICENSE-brand.txt::https://raw.githubusercontent.com/storytold/pdfcraft/v0.21.1/docs/brand/LICENSE-brand.txt
+	source = pdfcraft-0.21.1-LICENSE-app-icon.txt::https://raw.githubusercontent.com/storytold/pdfcraft/v0.21.1/assets/app-icon/LICENSE.txt
+	source = pdfcraft-0.21.1-OFL-DancingScript.txt::https://raw.githubusercontent.com/storytold/pdfcraft/v0.21.1/assets/fonts/OFL-DancingScript.txt
+	source = pdfcraft-0.21.1-OFL-Inter.txt::https://raw.githubusercontent.com/storytold/pdfcraft/v0.21.1/assets/fonts/OFL-Inter.txt
+	source = pdfcraft-0.21.1-OFL-JetBrainsMono.txt::https://raw.githubusercontent.com/storytold/pdfcraft/v0.21.1/assets/fonts/OFL-JetBrainsMono.txt
+	source = pdfcraft-0.21.1-LICENSE-lucide.txt::https://raw.githubusercontent.com/storytold/pdfcraft/v0.21.1/assets/icons/LICENSE-lucide.txt
+	source = pdfcraft-0.21.1-LICENSE-FOXIT.txt::https://raw.githubusercontent.com/storytold/pdfcraft/v0.21.1/vendor/hayro-interpret/assets/LICENSE_FOXIT
+	sha256sums = a7620386409bc691c7e223917db186ec447362f655fd81a1196d9853dcac1330
 	sha256sums = 0f33f48e7a96cd359d4e4e5b11424b13cebeb59cc70c77928186695e4173585c
 	sha256sums = b768acafe6cbad8247eedf86b5b5381feefcd4ee0f8c7808b86811bc687cf37b
 	sha256sums = 6f090277c00af96651ce6dbcc38ff1591047a3bffef486e80b6a32e8276a8201
@@ -48,9 +48,9 @@ pkgbase = printcraft-bin
 	sha256sums = a76abf002c49097d146e86740a3105a5d00450b1592e820a1109a8c5680cd697
 	sha256sums = b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57
 	sha256sums = b578cdd2345840ada550bd12519533812320d5f1d21cf4c1c7e1b1b0a31c98b7
-	source_x86_64 = https://github.com/storytold/pdfcraft/releases/download/v0.20.0/pdfcraft-0.20.0-linux-x86_64.tar.gz
-	sha256sums_x86_64 = 1a0f29c7a6ae04916126231d843b2ea836a21b8db09f2ef416951015a437e8bc
-	source_aarch64 = https://github.com/storytold/pdfcraft/releases/download/v0.20.0/pdfcraft-0.20.0-linux-aarch64.tar.gz
-	sha256sums_aarch64 = 3d796faad5b6f51046a8800c62894f7ed6cab3f7bc7850bf7e7b47c61da07e39
+	source_x86_64 = https://github.com/storytold/pdfcraft/releases/download/v0.21.1/pdfcraft-0.21.1-linux-x86_64.tar.gz
+	sha256sums_x86_64 = c2919e9044effde318e66807ad2a21bbb74a9555b3c0b99f9ad0c40cf61ce25e
+	source_aarch64 = https://github.com/storytold/pdfcraft/releases/download/v0.21.1/pdfcraft-0.21.1-linux-aarch64.tar.gz
+	sha256sums_aarch64 = b08efe416c1da450b04b3e4ec5f0389d71d7580f4398f9eda06d33d04713c770
 
 pkgname = printcraft-bin
