@@ -7,7 +7,7 @@ A PKGBUILD repository for Paru and AUR publishing.
 ```text
 atto-editor-git  Original Atto Emacs-like terminal editor
 atto-netbsd-git  NetBSD Atto Emacs-like terminal editor
-convex-self-hosted-bin  Convex backend and dashboard
+convex-bin     Convex backend and dashboard
 epic-lore-bin  Epic Games Lore binaries
 gossamer       Gossamer language toolchain
 lemon-studio-git  Lemon Studio digital audio workstation, pre-alpha
@@ -75,7 +75,7 @@ paru -S pi-bin filmcraft-bin
 ```bash
 (cd atto-editor-git && makepkg -si)
 (cd atto-netbsd-git && makepkg -si)
-(cd convex-self-hosted-bin && makepkg -si)
+(cd convex-bin && makepkg -si)
 (cd epic-lore-bin && makepkg -si)
 (cd gossamer && makepkg -si)
 (cd lemon-studio-git && makepkg -si)
@@ -137,7 +137,7 @@ Environment=CONVEX_ALLOW_SECRET_IN_ARGV=yes
 ```
 
 ```bash
-sudo systemctl enable --now convex-backend.service convex-dashboard.service
+sudo systemctl enable --now convex.target
 sudo env CONVEX_ALLOW_SECRET_IN_ARGV=yes /usr/lib/convex/convex-backend keygen
 ```
 
