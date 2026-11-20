@@ -2,7 +2,7 @@
 pkgname=craft-launcher-bin
 _pkgname=${pkgname%-bin}
 _distname=artcraft-launcher
-pkgver=0.0.0
+pkgver=0.19.2
 pkgrel=1
 pkgdesc='Install, update and launch Craft apps (prebuilt binaries)'
 arch=('x86_64' 'aarch64')
@@ -26,9 +26,12 @@ source=("$_pkgname-$pkgver-LICENSE-brand.txt::$_raw/docs/brand/LICENSE-brand.txt
         "$_pkgname-$pkgver-OFL-GeistMono.txt::$_raw/assets/fonts/OFL-GeistMono.txt")
 source_x86_64=("$url/releases/download/v$pkgver/$_distname-$pkgver-linux-x86_64.tar.gz")
 source_aarch64=("$url/releases/download/v$pkgver/$_distname-$pkgver-linux-aarch64.tar.gz")
-sha256sums=('SKIP' 'SKIP' 'SKIP' 'SKIP')
-sha256sums_x86_64=('SKIP')
-sha256sums_aarch64=('SKIP')
+sha256sums=('f30eefd1d7c2c950c89b8e426febd33b5b08908dc5090fd75e45ad993977a691'
+            '262481e844521b326f5ecd053e59b98c8b2da78c8ee1bdbb6e8174305e54935a'
+            '108b4e57c9c796d3d38d0428ca7ee39de47ad93187302718d9b2d8864b9b716b'
+            '1781d2806a07d91c4edf4740b88449fab7d0eadad53f7c351b94cd4d4eb8c00f')
+sha256sums_x86_64=('39a9aeb77f85ab06d65540b194f1582ec8c26529f7e10a8c9d6c07ff2180b66d')
+sha256sums_aarch64=('a92aca8456624a10f14398a4309e4d424d1a98203993a2a2d9484104d7d6e2dd')
 
 package() {
   cd "$srcdir/$_distname-$pkgver-linux-$CARCH"

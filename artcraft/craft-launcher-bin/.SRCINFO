@@ -1,0 +1,50 @@
+pkgbase = craft-launcher-bin
+	pkgdesc = Install, update and launch Craft apps (prebuilt binaries)
+	pkgver = 0.19.2
+	pkgrel = 1
+	url = https://github.com/storytold/craft-launcher
+	arch = x86_64
+	arch = aarch64
+	license = MIT OR Apache-2.0
+	license = OFL-1.1
+	license = CC0-1.0
+	license = CC-BY-4.0
+	license = ISC
+	license = Ubuntu-font-1.0
+	license = Bitstream-Vera
+	license = LicenseRef-ArtCraft-brand
+	depends = dbus
+	depends = glibc>=2.35
+	depends = hicolor-icon-theme
+	depends = libgcc
+	depends = libglvnd
+	depends = libx11
+	depends = libxcursor
+	depends = libxi
+	depends = libxkbcommon
+	depends = libxkbcommon-x11
+	depends = wayland
+	optdepends = flatpak: install Craft apps
+	provides = craft-launcher=0.19.2
+	provides = artcraft-launcher=0.19.2
+	conflicts = craft-launcher
+	conflicts = artcraft-launcher
+	conflicts = artcraft-launcher-git
+	options = !strip
+	options = !debug
+	source = craft-launcher-0.19.2-LICENSE-brand.txt::https://raw.githubusercontent.com/storytold/craft-launcher/v0.19.2/docs/brand/LICENSE-brand.txt
+	source = craft-launcher-0.19.2-OFL-Inter.txt::https://raw.githubusercontent.com/storytold/craft-launcher/v0.19.2/assets/fonts/OFL-Inter.txt
+	source = craft-launcher-0.19.2-OFL-Archivo.txt::https://raw.githubusercontent.com/storytold/craft-launcher/v0.19.2/assets/fonts/OFL-Archivo.txt
+	source = craft-launcher-0.19.2-OFL-GeistMono.txt::https://raw.githubusercontent.com/storytold/craft-launcher/v0.19.2/assets/fonts/OFL-GeistMono.txt
+	sha256sums = f30eefd1d7c2c950c89b8e426febd33b5b08908dc5090fd75e45ad993977a691
+	sha256sums = 262481e844521b326f5ecd053e59b98c8b2da78c8ee1bdbb6e8174305e54935a
+	sha256sums = 108b4e57c9c796d3d38d0428ca7ee39de47ad93187302718d9b2d8864b9b716b
+	sha256sums = 1781d2806a07d91c4edf4740b88449fab7d0eadad53f7c351b94cd4d4eb8c00f
+	source_x86_64 = https://github.com/storytold/craft-launcher/releases/download/v0.19.2/artcraft-launcher-0.19.2-linux-x86_64.tar.gz
+	sha256sums_x86_64 = 39a9aeb77f85ab06d65540b194f1582ec8c26529f7e10a8c9d6c07ff2180b66d
+	source_aarch64 = https://github.com/storytold/craft-launcher/releases/download/v0.19.2/artcraft-launcher-0.19.2-linux-aarch64.tar.gz
+	depends_aarch64 = libxcb
+	optdepends_aarch64 = vulkan-icd-loader: GPU-accelerated rendering
+	sha256sums_aarch64 = a92aca8456624a10f14398a4309e4d424d1a98203993a2a2d9484104d7d6e2dd
+
+pkgname = craft-launcher-bin
