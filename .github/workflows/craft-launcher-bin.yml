@@ -1,0 +1,87 @@
+name: Update and Build craft-launcher-bin
+
+on:
+  schedule:
+    - cron: '15 2 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check-and-build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    container:
+      image: archlinux:base-devel
+
+    steps:
+      - name: Install dependencies and create builder user
+        run: |
+          pacman -Syu --noconfirm
+          pacman -S --noconfirm git sudo curl jq pacman-contrib
+          useradd -m builder
+          echo "builder ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          ref: main
+          persist-credentials: false
+
+      - name: Set ownership for builder user
+        run: chown -R builder:builder "$GITHUB_WORKSPACE"
+
+      - name: Configure Git for builder user
+        run: |
+          sudo -u builder -E HOME=/home/builder git config --global user.name "github-actions[bot]"
+          sudo -u builder -E HOME=/home/builder git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Get current and latest versions
+        id: versions
+        run: |
+          current_ver=$(grep -oP '^pkgver=\K.*' artcraft/craft-launcher-bin/PKGBUILD)
+          latest_ver=$(curl -fsSL https://api.github.com/repos/storytold/craft-launcher/releases/latest | jq -er '.tag_name | ltrimstr("v")')
+          if ! printf '%s\n' "$latest_ver" | grep -Eq '^[0-9]+(\.[0-9]+)*$'; then
+            echo "Invalid release version: $latest_ver" >&2
+            exit 1
+          fi
+          changed=false
+          if [ "$current_ver" != "$latest_ver" ] ||
+             [ "${{ github.event_name }}" = "workflow_dispatch" ] ||
+             [ ! -f artcraft/craft-launcher-bin/.SRCINFO ]; then
+            changed=true
+          fi
+          echo "current=$current_ver" >> "$GITHUB_OUTPUT"
+          echo "latest=$latest_ver" >> "$GITHUB_OUTPUT"
+          echo "changed=$changed" >> "$GITHUB_OUTPUT"
+          echo "Current version: $current_ver"
+          echo "Latest version: $latest_ver"
+
+      - name: Update PKGBUILD and checksums
+        if: steps.versions.outputs.changed == 'true'
+        run: |
+          latest_ver="${{ steps.versions.outputs.latest }}"
+          if [ "${{ steps.versions.outputs.current }}" != "$latest_ver" ]; then
+            sed -i "s/^pkgver=.*/pkgver=$latest_ver/; s/^pkgrel=.*/pkgrel=1/" artcraft/craft-launcher-bin/PKGBUILD
+          fi
+          sudo -u builder -E HOME=/home/builder bash -lc 'cd artcraft/craft-launcher-bin && updpkgsums && makepkg --printsrcinfo > .SRCINFO'
+
+      - name: Build package
+        if: steps.versions.outputs.changed == 'true'
+        run: sudo -u builder -E HOME=/home/builder bash -lc 'cd artcraft/craft-launcher-bin && makepkg -fs --noconfirm'
+
+      - name: Push updated packaging to GitHub
+        if: steps.versions.outputs.changed == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          sudo -u builder -E HOME=/home/builder bash -ec '
+            git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+            git add artcraft/craft-launcher-bin/PKGBUILD artcraft/craft-launcher-bin/.SRCINFO
+            if ! git diff --cached --quiet; then
+              git commit -m "update: ${{ steps.versions.outputs.latest }}"
+            fi
+            git push origin main
+          '

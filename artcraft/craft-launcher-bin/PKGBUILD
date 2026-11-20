@@ -1,32 +1,46 @@
+# Maintainer: Sebastian Korotkiewicz <skorotkiewicz@gmail.com>
 pkgname=craft-launcher-bin
-_pkgname=craft-launcher
+_pkgname=${pkgname%-bin}
 _distname=artcraft-launcher
-pkgver=0.19.2
+pkgver=0.0.0
 pkgrel=1
-pkgdesc="The Craft App Launcher (prebuilt binary)"
+pkgdesc='Install, update and launch Craft apps (prebuilt binaries)'
 arch=('x86_64' 'aarch64')
 url="https://github.com/storytold/$_pkgname"
-license=('Apache-2.0' 'MIT')
-depends=('dbus' 'glibc' 'hicolor-icon-theme' 'libgcc' 'libglvnd'
+license=('MIT OR Apache-2.0' 'OFL-1.1' 'CC0-1.0' 'CC-BY-4.0' 'ISC'
+         'Ubuntu-font-1.0' 'Bitstream-Vera' 'LicenseRef-ArtCraft-brand')
+depends=('dbus' 'glibc>=2.35' 'hicolor-icon-theme' 'libgcc' 'libglvnd'
          'libx11' 'libxcursor' 'libxi' 'libxkbcommon' 'libxkbcommon-x11'
          'wayland')
 depends_aarch64=('libxcb')
 optdepends=('flatpak: install Craft apps')
 optdepends_aarch64=('vulkan-icd-loader: GPU-accelerated rendering')
-provides=("$_pkgname" "$_distname")
-conflicts=("$_pkgname" "$_distname" "artcraft-launcher-git")
-options=('!strip')
-source_x86_64=("$_distname-$pkgver-linux-x86_64.tar.gz::$url/releases/download/v$pkgver/$_distname-$pkgver-linux-x86_64.tar.gz")
-source_aarch64=("$_distname-$pkgver-linux-aarch64.tar.gz::$url/releases/download/v$pkgver/$_distname-$pkgver-linux-aarch64.tar.gz")
-sha256sums_x86_64=('39a9aeb77f85ab06d65540b194f1582ec8c26529f7e10a8c9d6c07ff2180b66d')
-sha256sums_aarch64=('a92aca8456624a10f14398a4309e4d424d1a98203993a2a2d9484104d7d6e2dd')
+provides=("$_pkgname=$pkgver" "$_distname=$pkgver")
+conflicts=("$_pkgname" "$_distname" "$_distname-git")
+options=(!strip !debug)
+
+_raw="https://raw.githubusercontent.com/storytold/$_pkgname/v$pkgver"
+source=("$_pkgname-$pkgver-LICENSE-brand.txt::$_raw/docs/brand/LICENSE-brand.txt"
+        "$_pkgname-$pkgver-OFL-Inter.txt::$_raw/assets/fonts/OFL-Inter.txt"
+        "$_pkgname-$pkgver-OFL-Archivo.txt::$_raw/assets/fonts/OFL-Archivo.txt"
+        "$_pkgname-$pkgver-OFL-GeistMono.txt::$_raw/assets/fonts/OFL-GeistMono.txt")
+source_x86_64=("$url/releases/download/v$pkgver/$_distname-$pkgver-linux-x86_64.tar.gz")
+source_aarch64=("$url/releases/download/v$pkgver/$_distname-$pkgver-linux-aarch64.tar.gz")
+sha256sums=('SKIP' 'SKIP' 'SKIP' 'SKIP')
+sha256sums_x86_64=('SKIP')
+sha256sums_aarch64=('SKIP')
 
 package() {
-	local _root="$srcdir/$_distname-$pkgver-linux-$CARCH"
-	install -Dm755 "$_root/bin/$_distname" "$pkgdir/usr/bin/$_distname"
-	ln -s "$_distname" "$pkgdir/usr/bin/$_pkgname"
-	cp -a "$_root/share" "$pkgdir/usr/share"
-	install -Dm644 "$_root/share/doc/$_distname/LICENSE-APACHE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE-APACHE"
-	install -Dm644 "$_root/share/doc/$_distname/LICENSE-MIT" "$pkgdir/usr/share/licenses/$pkgname/LICENSE-MIT"
-	install -Dm644 "$_root/share/doc/$_distname/NOTICE" "$pkgdir/usr/share/licenses/$pkgname/NOTICE"
+  cd "$srcdir/$_distname-$pkgver-linux-$CARCH"
+
+  install -Dm755 "bin/$_distname" "$pkgdir/usr/bin/$_distname"
+  ln -s "$_distname" "$pkgdir/usr/bin/$_pkgname"
+  cp -a --no-preserve=ownership share "$pkgdir/usr/"
+
+  local _licenses="$pkgdir/usr/share/licenses/$pkgname"
+  install -Dm644 "share/doc/$_distname/"{LICENSE-APACHE,LICENSE-MIT,NOTICE} -t "$_licenses/"
+  local _file
+  for _file in LICENSE-brand.txt OFL-{Inter,Archivo,GeistMono}.txt; do
+    install -Dm644 "$srcdir/$_pkgname-$pkgver-$_file" "$_licenses/$_file"
+  done
 }

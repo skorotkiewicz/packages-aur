@@ -23,6 +23,7 @@ sapling-scm-bin  Sapling Git-compatible source control, custom build
 ttf-nordwand-mono  Nordwand Mono (TrueType)
 otf-nordwand-mono  Nordwand Mono (OpenType)
 
+craft-launcher-bin  ArtCraft app launcher
 designcraft-bin  Page layout and desktop publishing
 effectcraft-bin  Motion graphics and visual effects
 filmcraft-bin    FilmCraft video editor, custom build
@@ -88,6 +89,7 @@ paru -S pi-bin filmcraft-bin
 
 (cd nordwand-mono && makepkg -si)
 
+(cd artcraft/craft-launcher-bin && makepkg -si)
 (cd artcraft/designcraft-bin && makepkg -si)
 (cd artcraft/effectcraft-bin && makepkg -si)
 (cd artcraft/filmcraft-bin && makepkg -si)
