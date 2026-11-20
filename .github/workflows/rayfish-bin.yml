@@ -1,5 +1,5 @@
-# name: Update and Publish rayfish to AUR
-name: Update and Build rayfish
+# name: Update and Publish rayfish-bin to AUR
+name: Update and Build rayfish-bin
 
 on:
   schedule:
@@ -42,7 +42,7 @@ jobs:
       - name: Get current and latest versions
         id: versions
         run: |
-          current_ver=$(grep -oP '^pkgver=\K.*' rayfish/PKGBUILD)
+          current_ver=$(grep -oP '^pkgver=\K.*' rayfish-bin/PKGBUILD)
           latest_ver=$(curl -fsSL https://api.github.com/repos/rayfish/rayfish/releases/latest | jq -r '.tag_name' | sed 's/^v//')
           changed=false
           if [ "$current_ver" != "$latest_ver" ]; then
@@ -58,13 +58,13 @@ jobs:
         if: steps.versions.outputs.changed == 'true'
         run: |
           latest_ver="${{ steps.versions.outputs.latest }}"
-          sed -i "s/^pkgver=.*/pkgver=$latest_ver/" rayfish/PKGBUILD
-          sed -i "s/^pkgrel=.*/pkgrel=1/" rayfish/PKGBUILD
-          sudo -u builder -E HOME=/home/builder bash -lc 'cd rayfish && updpkgsums && makepkg --printsrcinfo > .SRCINFO'
+          sed -i "s/^pkgver=.*/pkgver=$latest_ver/" rayfish-bin/PKGBUILD
+          sed -i "s/^pkgrel=.*/pkgrel=1/" rayfish-bin/PKGBUILD
+          sudo -u builder -E HOME=/home/builder bash -lc 'cd rayfish-bin && updpkgsums && makepkg --printsrcinfo > .SRCINFO'
 
       - name: Build package
         if: steps.versions.outputs.changed == 'true'
-        run: sudo -u builder -E HOME=/home/builder bash -lc 'cd rayfish && makepkg -f'
+        run: sudo -u builder -E HOME=/home/builder bash -lc 'cd rayfish-bin && makepkg -f'
 
       - name: Push updated packaging to GitHub
         if: steps.versions.outputs.changed == 'true'
@@ -72,7 +72,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           sudo -u builder -E HOME=/home/builder git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-          sudo -u builder -E HOME=/home/builder git add rayfish/PKGBUILD rayfish/.SRCINFO
+          sudo -u builder -E HOME=/home/builder git add rayfish-bin/PKGBUILD rayfish-bin/.SRCINFO
           sudo -u builder -E HOME=/home/builder git commit -m "update: ${{ steps.versions.outputs.latest }}" || true
           sudo -u builder -E HOME=/home/builder git push origin main
 
@@ -97,10 +97,10 @@ jobs:
 #       - name: Publish AUR package
 #         uses: KSXGitHub/github-actions-deploy-aur@v4.1.2
 #         with:
-#           pkgname: rayfish
-#           pkgbuild: ./rayfish/PKGBUILD
+#           pkgname: rayfish-bin
+#           pkgbuild: ./rayfish-bin/PKGBUILD
 #           assets: |
-#             rayfish/.SRCINFO
+#             rayfish-bin/.SRCINFO
 #           commit_username: ${{ secrets.AUR_USERNAME }}
 #           commit_email: ${{ secrets.AUR_EMAIL }}
 #           ssh_private_key: ${{ secrets.AUR_SSH_PRIVATE_KEY }}

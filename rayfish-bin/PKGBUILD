@@ -1,5 +1,5 @@
 # Maintainer: Sebastian Korotkiewicz <skorotkiewicz@gmail.com>
-pkgname=rayfish
+pkgname=rayfish-bin
 pkgver=0.5.17
 pkgrel=1
 pkgdesc="P2P mesh VPN powered by iroh"

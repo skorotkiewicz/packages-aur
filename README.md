@@ -16,7 +16,7 @@ min-bin        Min Browser
 ollaya-bin     Ollaya binaries
 pi-bin         Pi binaries
 prospero-bin   Prospero native AI coding harness
-rayfish        Rayfish binaries
+rayfish-bin    Rayfish binaries
 rhun-bin       Rhun code editor
 sapling-scm-bin  Sapling Git-compatible source control, custom build
 
@@ -82,7 +82,7 @@ paru -S pi-bin filmcraft-bin
 (cd ollaya-bin && makepkg -si)
 (cd pi-bin && makepkg -si)
 (cd prospero-bin && makepkg -si)
-(cd rayfish && makepkg -si)
+(cd rayfish-bin && makepkg -si)
 (cd rhun-bin && makepkg -si)
 (cd sapling-scm-bin && makepkg -si)
 

@@ -1,4 +1,4 @@
-pkgbase = rayfish
+pkgbase = rayfish-bin
 	pkgdesc = P2P mesh VPN powered by iroh
 	pkgver = 0.5.17
 	pkgrel = 1
@@ -13,4 +13,4 @@ pkgbase = rayfish
 	source_aarch64 = ray-linux-aarch64-0.5.17::https://github.com/rayfish/rayfish/releases/download/v0.5.17/ray-linux-aarch64
 	sha256sums_aarch64 = a3f893cd3875564010943fa2f7371d6d23240298df81d06e9fcd962498f8b8c6
 
-pkgname = rayfish
+pkgname = rayfish-bin
