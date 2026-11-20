@@ -1,0 +1,37 @@
+# Maintainer: Sebastian Korotkiewicz <skorotkiewicz@gmail.com>
+pkgname=convex-self-hosted-bin
+pkgver=0.0.0
+pkgrel=1
+pkgdesc='Self-hosted Convex backend and dashboard (prebuilt binaries)'
+arch=('x86_64' 'aarch64')
+url='https://github.com/convex/convex-backend'
+license=('LicenseRef-FSL-1.1-Apache-2.0')
+depends=('bash' 'ca-certificates' 'caddy' 'gcc-libs' 'glibc>=2.35')
+options=(!strip !debug)
+
+_date=${pkgver%%.*}
+_tag="precompiled-${_date:0:4}-${_date:4:2}-${_date:6:2}-${pkgver#*.g}"
+_release="$url/releases/download/$_tag"
+source=("convex-dashboard-$pkgver.zip::$_release/dashboard.zip"
+        "convex-LICENSE-$pkgver.md::$_release/LICENSE.md"
+        'convex-backend'
+        'convex-backend.service'
+        'convex-dashboard.service'
+        'convex-dashboard.Caddyfile')
+source_x86_64=("convex-backend-$pkgver-x86_64.zip::$_release/convex-local-backend-x86_64-unknown-linux-gnu.zip")
+source_aarch64=("convex-backend-$pkgver-aarch64.zip::$_release/convex-local-backend-aarch64-unknown-linux-gnu.zip")
+noextract=("convex-dashboard-$pkgver.zip")
+sha256sums=('SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP' 'SKIP')
+sha256sums_x86_64=('SKIP')
+sha256sums_aarch64=('SKIP')
+
+package() {
+  install -Dm755 "$srcdir/convex-local-backend" "$pkgdir/usr/bin/convex-local-backend"
+  install -Dm755 "$srcdir/convex-backend" "$pkgdir/usr/lib/convex/convex-backend"
+  install -Dm644 "$srcdir/convex-LICENSE-$pkgver.md" "$pkgdir/usr/share/licenses/$pkgname/LICENSE.md"
+  install -Dm644 "$srcdir/convex-dashboard.Caddyfile" "$pkgdir/usr/lib/convex/dashboard.Caddyfile"
+  install -Dm644 "$srcdir/"convex-{backend,dashboard}.service -t "$pkgdir/usr/lib/systemd/system/"
+
+  install -dm755 "$pkgdir/usr/share/convex/dashboard"
+  bsdtar -xf "$srcdir/convex-dashboard-$pkgver.zip" --no-same-owner -C "$pkgdir/usr/share/convex/dashboard"
+}
