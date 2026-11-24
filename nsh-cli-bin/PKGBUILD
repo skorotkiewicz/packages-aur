@@ -44,8 +44,8 @@ package() {
 
   bsdtar -xf "$srcdir/nsh-web-$pkgver.tar.gz" --strip-components=2 -C "$pkgdir/usr/lib/nsh/runtime"
 
-  # Install TUI host binary
-  bsdtar -xf "$srcdir/$tui" nsh/runtime/tui/nsh-tui-host -O > "$pkgdir/usr/bin/nsh-tui-host"
+  # Install TUI host binary from extracted runtime
+  install -Dm755 "$pkgdir/usr/lib/nsh/runtime/tui/nsh-tui-host" "$pkgdir/usr/bin/nsh-tui-host"
 
   install -Dm644 "$srcdir/nsh-LICENSE-$pkgver" "$pkgdir/usr/share/licenses/$pkgname/LICENSE-APACHE"
 }
