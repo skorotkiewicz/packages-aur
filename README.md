@@ -8,6 +8,7 @@ A PKGBUILD repository for Paru and AUR publishing.
 atto-editor-git  Original Atto Emacs-like terminal editor
 atto-netbsd-git  NetBSD Atto Emacs-like terminal editor
 convex-bin     Convex backend and dashboard
+nsh-cli-bin    nsh CLI: build, run, and package native-shell apps
 epic-lore-bin  Epic Games Lore binaries
 gossamer       Gossamer language toolchain
 lemon-studio-git  Lemon Studio digital audio workstation, pre-alpha
@@ -76,6 +77,7 @@ paru -S pi-bin filmcraft-bin
 (cd atto-editor-git && makepkg -si)
 (cd atto-netbsd-git && makepkg -si)
 (cd convex-bin && makepkg -si)
+(cd nsh-cli-bin && makepkg -si)
 (cd epic-lore-bin && makepkg -si)
 (cd gossamer && makepkg -si)
 (cd lemon-studio-git && makepkg -si)
